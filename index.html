@@ -102,6 +102,18 @@
   .num1 { position: absolute; left: 18px; top: 18px; width: 52px; height: 52px; border-radius: 50%; background: var(--pink); color: #070b1f;
     font-weight: 900; font-size: 28px; display: flex; align-items: center; justify-content: center; }
   .quote { font-size: 48px; font-weight: 800; text-align: left; display: flex; align-items: center; gap: 30px; }
+  /* 按一下出現一列 */
+  .qa .qrow { display: flex; align-items: stretch; gap: 26px; margin-bottom: 22px; }
+  .qa .q { width: 520px; display: flex; align-items: center; gap: 22px; padding: 20px 28px; border-radius: 22px; font-size: 40px; font-weight: 900;
+    background: color-mix(in srgb, var(--c) 18%, #131a3a); border: 3px solid var(--c); box-shadow: 0 0 26px color-mix(in srgb, var(--c) 40%, transparent); }
+  .qa .q .qn { font-size: 26px; color: var(--c); }
+  .qa .q .emo { font-size: 56px; }
+  .qa .a { flex: 1; display: flex; align-items: center; padding: 20px 32px; border-radius: 22px; font-size: 36px; font-weight: 700;
+    background: rgba(19,26,58,.88); border: 2px dashed var(--c); }
+  .reveal { opacity: 0; transform: translateX(-60px); transition: opacity .5s, transform .5s cubic-bezier(.2,.9,.3,1.2); }
+  .reveal.on { opacity: 1; transform: none; }
+  .reveal .a { opacity: 0; transform: translateX(40px); transition: opacity .5s .35s, transform .5s .35s; }
+  .reveal.on .a { opacity: 1; transform: none; }
   .hint { position: fixed; left: 12px; bottom: 8px; font-size: 12px; color: #555; }
   .btn { display: inline-block; margin-top: 18px; padding: 12px 30px; border-radius: 999px; font-size: 24px; font-weight: 800;
     background: linear-gradient(90deg, var(--lime), var(--cyan)); color: #070b1f; text-decoration: none; }
@@ -203,27 +215,15 @@
   <div class="pill in" style="--d:3">先想清楚任務對不對，再動手</div>
 </section>
 
-<!-- 6 企劃卡四問 -->
+<!-- 6 企劃卡四問＋範例（按一下出現一個問題） -->
 <section class="slide">
   <span class="tag c-cyan">10:20｜引導</span>
-  <h2>產品企劃卡：四個問題</h2>
-  <div class="row">
-    <div class="card c-cyan in" style="--d:.2"><div style="font-size:30px;font-weight:800">Q1</div><div class="emo" style="font-size:130px;margin-top:20px">🎯</div><div class="big t">給誰用</div></div>
-    <div class="card c-gold in" style="--d:.4"><div style="font-size:30px;font-weight:800">Q2</div><div class="emo" style="font-size:130px;margin-top:20px">⏰</div><div class="big t">什麼時候用</div></div>
-    <div class="card c-pink in" style="--d:.6"><div style="font-size:30px;font-weight:800">Q3</div><div class="emo" style="font-size:130px;margin-top:20px">🧩</div><div class="big t">解決什麼問題</div></div>
-    <div class="card c-lime in" style="--d:.8"><div style="font-size:30px;font-weight:800">Q4</div><div class="emo" style="font-size:130px;margin-top:20px">⭐</div><div class="big t">有什麼特色</div></div>
-  </div>
-</section>
-
-<!-- 7 範例 -->
-<section class="slide">
-  <span class="tag c-cyan">10:20｜引導</span>
-  <h2>拆解範例：AI 評語精靈</h2>
-  <div class="lines">
-    <div class="ln in" style="--c:var(--cyan);--d:.2"><span class="emo">🎯</span><span class="k">給誰用</span>國小導師</div>
-    <div class="ln in" style="--c:var(--gold);--d:.4"><span class="emo">⏰</span><span class="k">什麼時候用</span>期末幫全班寫評語</div>
-    <div class="ln in" style="--c:var(--pink);--d:.6"><span class="emo">🧩</span><span class="k">解決什麼問題</span>一個一個寫太花時間，舊評語怕重複</div>
-    <div class="ln in" style="--c:var(--lime);--d:.8"><span class="emo">⭐</span><span class="k">有什麼特色</span>字數可切換、整班一次產出</div>
+  <h2>產品企劃卡：四個問題 <span style="font-size:32px;color:var(--sub)">範例｜AI 評語精靈</span></h2>
+  <div class="qa">
+    <div class="qrow reveal" style="--c:var(--cyan)"><div class="q"><span class="qn">Q1</span><span class="emo">🎯</span>給誰用</div><div class="a">國小導師</div></div>
+    <div class="qrow reveal" style="--c:var(--gold)"><div class="q"><span class="qn">Q2</span><span class="emo">⏰</span>什麼時候用</div><div class="a">期末幫全班寫評語</div></div>
+    <div class="qrow reveal" style="--c:var(--pink)"><div class="q"><span class="qn">Q3</span><span class="emo">🧩</span>解決什麼問題</div><div class="a">一個一個寫太花時間，舊評語怕重複</div></div>
+    <div class="qrow reveal" style="--c:var(--lime)"><div class="q"><span class="qn">Q4</span><span class="emo">⭐</span>有什麼特色</div><div class="a">字數可切換、整班一次產出</div></div>
   </div>
 </section>
 
@@ -403,22 +403,32 @@
     n = Math.max(0, Math.min(slides.length - 1, n));
     slides[cur].classList.remove("active");
     cur = n;
+    slides[cur].querySelectorAll(".reveal.on").forEach((r) => r.classList.remove("on"));
     // 重新觸發進場動畫
     void slides[cur].offsetWidth;
     slides[cur].classList.add("active");
     location.hash = cur + 1;
     if (slides[cur].id === "story") story.play(); else story.stop();
   }
+  // 有 .reveal 的頁：先一個一個出現，出完才換頁
+  function next() {
+    const r = slides[cur].querySelector(".reveal:not(.on)");
+    if (r) r.classList.add("on"); else go(cur + 1);
+  }
+  function prev() {
+    const on = slides[cur].querySelectorAll(".reveal.on");
+    if (on.length) on[on.length - 1].classList.remove("on"); else go(cur - 1);
+  }
   addEventListener("keydown", (e) => {
-    if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) go(cur + 1);
-    if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) go(cur - 1);
+    if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) next();
+    if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) prev();
     if (e.key === "Home") go(0);
     if (e.key === "End") go(slides.length - 1);
     if (e.key === "f" || e.key === "F") document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
   });
   addEventListener("click", (e) => {
     if (e.target.closest("a,button")) return;
-    e.clientX > innerWidth / 3 ? go(cur + 1) : go(cur - 1);
+    e.clientX > innerWidth / 3 ? next() : prev();
   });
 
   // ── 草船借箭動畫 ──
