@@ -112,6 +112,8 @@
     background: rgba(19,26,58,.88); border: 2px dashed var(--c); }
   .reveal { opacity: 0; transform: translateX(-60px); transition: opacity .5s, transform .5s cubic-bezier(.2,.9,.3,1.2); }
   .reveal.on { opacity: 1; transform: none; }
+  .x.reveal { transform: scale(2.5) rotate(-20deg); }
+  .x.reveal.on { transform: none; }
   .reveal .a { opacity: 0; transform: translateX(40px); transition: opacity .5s .35s, transform .5s .35s; }
   .reveal.on .a { opacity: 1; transform: none; }
   /* 示範提醒 */
@@ -221,21 +223,21 @@
   <button id="replay">↻ 重播</button>
 </section>
 
-<!-- 5 造箭 → 借箭 -->
+<!-- 5 造箭 → 借箭（按一下出現一步） -->
 <section class="slide">
   <span class="tag c-cyan">10:20｜引導</span>
   <h2>諸葛亮換了一個問題</h2>
   <div class="vs">
-    <div class="card in" style="--c:var(--red);--d:.2">
+    <div class="card reveal" style="--c:var(--red)">
       <div class="emo" style="font-size:120px">🔨</div><div class="word" style="color:#fca5a5">造箭</div><div class="small">任務本身做不到</div>
-      <div class="x stamp">✗</div>
+      <div class="x reveal">✗</div>
     </div>
-    <div class="arrowbig in" style="--d:1.8">→</div>
-    <div class="card c-lime flyin">
+    <div class="arrowbig reveal">→</div>
+    <div class="card c-lime reveal">
       <div class="emo" style="font-size:120px">⛵</div><div class="word" style="color:var(--lime)">借箭</div><div class="small">一個晚上就完成</div>
     </div>
   </div>
-  <div class="pill in" style="--d:3">先想清楚任務對不對，再動手</div>
+  <div class="pill reveal">先想清楚任務對不對，再動手</div>
 </section>
 
 <!-- 6 企劃卡四問＋範例（按一下出現一個問題） -->
