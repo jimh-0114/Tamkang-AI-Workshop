@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>抽組選號器</title>
+<style>
+  :root {
+    --bg1: #070b1f; --bg2: #1b1446; --card: #131a3a; --txt: #f8fafc; --sub: #c7d2fe;
+    --cyan: #22d3ee; --pink: #f472b6; --gold: #fbbf24; --lime: #a3e635;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; color: var(--txt);
+    font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+    background: radial-gradient(circle at 85% 10%, rgba(34,211,238,.18), transparent 40%),
+                radial-gradient(circle at 10% 90%, rgba(244,114,182,.16), transparent 40%),
+                linear-gradient(135deg, var(--bg1), var(--bg2));
+    display: flex; flex-direction: column; align-items: center; padding: 32px 16px;
+  }
+  h1 { margin: 0 0 8px; font-size: clamp(32px, 5vw, 56px); letter-spacing: 2px; }
+  .hint { color: var(--sub); margin: 0 0 28px; font-size: 20px; }
+  .settings { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 28px; }
+  .settings label { background: var(--card); border: 2px solid #3b4380; border-radius: 14px;
+    padding: 12px 18px; font-size: 22px; display: flex; align-items: center; gap: 10px; }
+  .settings input { width: 80px; font-size: 24px; text-align: center; border-radius: 8px; border: none;
+    padding: 6px; background: #0b1130; color: var(--txt); font-family: inherit; }
+  .stage { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; margin-bottom: 28px; }
+  .slot { width: 200px; height: 220px; border-radius: 24px; background: var(--card);
+    border: 3px solid #3b4380; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: transform .25s, box-shadow .25s, border-color .25s; }
+  .slot .num { font-size: 110px; font-weight: 800; line-height: 1; }
+  .slot .unit { font-size: 26px; color: var(--sub); margin-top: 6px; }
+  .slot.spin .num { color: var(--sub); }
+  .slot.done { transform: scale(1.06); }
+  .slot.done:nth-child(3n+1) { border-color: var(--cyan); box-shadow: 0 0 36px rgba(34,211,238,.55); color: var(--cyan); }
+  .slot.done:nth-child(3n+2) { border-color: var(--gold); box-shadow: 0 0 36px rgba(251,191,36,.55); color: var(--gold); }
+  .slot.done:nth-child(3n+3) { border-color: var(--pink); box-shadow: 0 0 36px rgba(244,114,182,.55); color: var(--pink); }
+  .buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  button { font-family: inherit; font-size: 26px; font-weight: 700; border: none; border-radius: 999px;
+    padding: 14px 40px; cursor: pointer; transition: transform .15s, opacity .15s; }
+  button:hover { transform: translateY(-2px); }
+  button:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+  #draw { background: linear-gradient(90deg, var(--cyan), var(--pink)); color: #070b1f; }
+  #reset { background: transparent; color: var(--sub); border: 2px solid #3b4380; }
+  .history { margin-top: 28px; font-size: 20px; color: var(--sub); text-align: center; }
+  .history b { color: var(--lime); }
+  .msg { margin-top: 14px; font-size: 20px; color: var(--gold); min-height: 28px; text-align: center; }
+</style>
+</head>
+<body>
+  <h1>🎲 抽組選號器</h1>
+  <p class="hint">抽到的組別請準備上台，每組 2–3 分鐘</p>
+
+  <div class="settings">
+    <label>總共 <input id="total" type="number" min="1" max="99" value="10"> 組</label>
+    <label>一次抽 <input id="count" type="number" min="1" max="10" value="3"> 組</label>
+  </div>
+
+  <div class="stage" id="stage"></div>
+
+  <div class="buttons">
+    <button id="draw">開始抽組</button>
+    <button id="reset">重來</button>
+  </div>
+  <div class="msg" id="msg"></div>
+  <div class="history" id="history">已抽過：<b>（還沒有）</b></div>
+
+<script>
+  // 抽過的組別不會再被抽到；按「重來」才清空
+  const $ = (id) => document.getElementById(id);
+  let drawn = [];
+
+  function slots(n) {
+    $("stage").innerHTML = "";
+    for (let i = 0; i < n; i++) {
+      const d = document.createElement("div");
+      d.className = "slot";
+      d.innerHTML = '<div class="num">?</div><div class="unit">第 ' + (i + 1) + ' 位</div>';
+      $("stage").appendChild(d);
+    }
+  }
+
+  function remaining() {
+    const total = parseInt($("total").value, 10) || 0;
+    const left = [];
+    for (let g = 1; g <= total; g++) if (!drawn.includes(g)) left.push(g);
+    return left;
+  }
+
+  function showHistory() {
+    $("history").innerHTML = "已抽過：<b>" + (drawn.length ? drawn.map((g) => g + " 組").join("、") : "（還沒有）") + "</b>";
+  }
+
+  async function spin(el, pool, ms) {
+    el.classList.add("spin");
+    const num = el.querySelector(".num");
+    const end = Date.now() + ms;
+    while (Date.now() < end) {
+      num.textContent = pool[Math.floor(Math.random() * pool.length)];
+      await new Promise((r) => setTimeout(r, 60));
+    }
+    el.classList.remove("spin");
+  }
+
+  $("draw").onclick = async () => {
+    const count = parseInt($("count").value, 10) || 0;
+    let left = remaining();
+    $("msg").textContent = "";
+    if (count < 1) { $("msg").textContent = "請先設定一次要抽幾組"; return; }
+    if (left.length === 0) { $("msg").textContent = "所有組別都抽過了，按「重來」重新開始"; return; }
+    const n = Math.min(count, left.length);
+    if (n < count) $("msg").textContent = "剩下的組別不夠，這次只抽 " + n + " 組";
+    $("draw").disabled = true; $("reset").disabled = true;
+    slots(n);
+    const els = [...document.querySelectorAll(".slot")];
+    for (let i = 0; i < n; i++) {
+      const pick = left[Math.floor(Math.random() * left.length)];
+      await spin(els[i], left, 1400);
+      els[i].querySelector(".num").textContent = pick;
+      els[i].querySelector(".unit").textContent = "第 " + pick + " 組";
+      els[i].classList.add("done");
+      drawn.push(pick);
+      left = left.filter((g) => g !== pick);
+      showHistory();
+    }
+    $("draw").disabled = false; $("reset").disabled = false;
+  };
+
+  $("reset").onclick = () => {
+    drawn = [];
+    $("msg").textContent = "";
+    slots(parseInt($("count").value, 10) || 3);
+    showHistory();
+  };
+
+  slots(3);
+</script>
+</body>
+</html>

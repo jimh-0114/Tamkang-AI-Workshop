@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>數位學習與 AI 相遇｜工作坊</title>
+<style>
+  :root {
+    --bg1: #070b1f; --bg2: #1b1446; --card: rgba(19,26,58,.88); --txt: #f8fafc; --sub: #c7d2fe; --dim: #8b93c9;
+    --cyan: #22d3ee; --pink: #f472b6; --gold: #fbbf24; --lime: #a3e635; --violet: #a78bfa; --red: #ef4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #000; overflow: hidden; }
+  body { font-family: "Microsoft JhengHei", "PingFang TC", sans-serif; color: var(--txt); }
+  /* 固定 1600×900 舞台，依視窗等比縮放 */
+  #stage { position: absolute; width: 1600px; height: 900px; left: 50%; top: 50%; transform-origin: center; }
+  .slide {
+    position: absolute; inset: 0; padding: 56px 72px; overflow: hidden; opacity: 0; pointer-events: none;
+    transition: opacity .6s ease, transform .6s ease; transform: scale(1.02);
+    background: radial-gradient(circle at 88% 8%, rgba(34,211,238,.16), transparent 32%),
+                radial-gradient(circle at 6% 96%, rgba(244,114,182,.14), transparent 34%),
+                linear-gradient(135deg, var(--bg1), var(--bg2));
+  }
+  .slide.active { opacity: 1; pointer-events: auto; transform: none; }
+  .tag { display: inline-block; padding: 8px 22px; border-radius: 999px; font-size: 20px; font-weight: 700;
+    border: 2px solid currentColor; background: color-mix(in srgb, currentColor 18%, transparent); }
+  h2 { font-size: 52px; margin: 18px 0 34px; letter-spacing: 1px; }
+  .foot { position: absolute; left: 72px; right: 72px; bottom: 26px; display: flex; justify-content: space-between;
+    font-size: 15px; color: var(--dim); }
+  .row { display: flex; gap: 30px; }
+  .card { flex: 1; background: var(--card); border: 3px solid var(--c, var(--cyan)); border-radius: 26px; position: relative;
+    box-shadow: 0 0 28px color-mix(in srgb, var(--c, var(--cyan)) 35%, transparent); padding: 26px; text-align: center; }
+  .card::before { content: ""; position: absolute; left: 30px; right: 30px; top: -3px; height: 7px; border-radius: 6px; background: var(--c, var(--cyan)); }
+  .emo { font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif; line-height: 1; }
+  .big { font-size: 34px; font-weight: 800; margin-top: 18px; }
+  .small { font-size: 22px; color: var(--sub); margin-top: 10px; }
+  .pill { margin: 34px auto 0; width: fit-content; padding: 16px 48px; border-radius: 999px; font-size: 32px; font-weight: 800;
+    color: var(--gold); background: rgba(251,191,36,.16); border: 2px solid rgba(251,191,36,.5); }
+  .c-cyan { --c: var(--cyan); color: var(--cyan); } .c-pink { --c: var(--pink); color: var(--pink); }
+  .c-gold { --c: var(--gold); color: var(--gold); } .c-lime { --c: var(--lime); color: var(--lime); }
+  .c-violet { --c: var(--violet); color: var(--violet); }
+  .card .t { color: var(--txt); }
+  /* 進場：.in 依 --d 延遲彈出 */
+  .slide .in { opacity: 0; transform: translateY(30px) scale(.96); }
+  .slide.active .in { animation: pop .7s cubic-bezier(.2,.9,.3,1.25) forwards; animation-delay: calc(var(--d, 0) * 1s); }
+  @keyframes pop { to { opacity: 1; transform: none; } }
+
+  /* 封面 */
+  .cover { display: flex; flex-direction: column; justify-content: center; height: 100%; padding-left: 40px; border-left: 10px solid var(--cyan); }
+  .cover .org { font-size: 28px; color: var(--cyan); font-weight: 700; }
+  .cover h1 { font-size: 104px; margin: 14px 0 8px; background: linear-gradient(90deg, #fff, #c7d2fe 60%, var(--cyan));
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .cover .subt { font-size: 46px; color: var(--sub); font-weight: 700; }
+  .cover .meta { margin-top: 56px; font-size: 28px; line-height: 1.6; font-weight: 700; }
+
+  /* 流程時間軸 */
+  .timeline { position: relative; display: flex; justify-content: space-between; margin-top: 70px; }
+  .timeline::before { content: ""; position: absolute; left: 90px; right: 90px; top: 150px; height: 6px; background: #3b4380; border-radius: 3px; }
+  .step { width: 210px; text-align: center; position: relative; }
+  .step .tm { font-size: 34px; font-weight: 800; }
+  .step .dot { width: 150px; height: 150px; margin: 16px auto; border-radius: 50%; background: #131a3a; border: 4px solid currentColor;
+    display: flex; align-items: center; justify-content: center; font-size: 76px; box-shadow: 0 0 30px color-mix(in srgb, currentColor 45%, transparent); }
+  .step .nm { font-size: 32px; font-weight: 800; color: var(--txt); line-height: 1.25; min-height: 80px; }
+  .step .who { font-size: 22px; color: var(--sub); margin-top: 6px; }
+  .bar { margin: 26px auto 0; width: 64%; text-align: center; font-size: 26px; font-weight: 700; color: var(--cyan);
+    border-top: 5px solid var(--cyan); padding-top: 14px; }
+
+  /* 草船借箭場景 */
+  #scene { position: absolute; inset: 0; }
+  #scene svg { width: 100%; height: 100%; display: block; }
+  .fog { position: absolute; border-radius: 50%; background: rgba(200,210,255,.12); filter: blur(30px); pointer-events: none; }
+  .cap { position: absolute; left: 50%; transform: translateX(-50%); bottom: 34px; font-size: 40px; font-weight: 800;
+    padding: 14px 40px; border-radius: 18px; background: rgba(7,11,31,.72); border: 2px solid rgba(255,255,255,.18);
+    opacity: 0; transition: opacity .6s; white-space: nowrap; }
+  .cap.show { opacity: 1; }
+  #counter { position: absolute; right: 70px; top: 64px; text-align: right; }
+  #counter .lbl { font-size: 24px; color: var(--sub); font-weight: 700; }
+  #counter .num { font-size: 80px; font-weight: 900; color: var(--gold); text-shadow: 0 0 24px rgba(251,191,36,.6); font-variant-numeric: tabular-nums; }
+  #replay { position: absolute; right: 70px; top: 200px; font-size: 20px; padding: 10px 24px; border-radius: 999px; cursor: pointer;
+    background: rgba(255,255,255,.08); color: var(--sub); border: 2px solid #3b4380; font-family: inherit; }
+  .scene-title { position: absolute; left: 72px; top: 56px; }
+
+  /* 造箭 → 借箭 */
+  .vs { display: flex; align-items: center; gap: 40px; margin-top: 30px; }
+  .vs .card { padding: 40px; }
+  .vs .word { font-size: 92px; font-weight: 900; }
+  .x { position: absolute; right: 18px; top: -40px; font-size: 170px; color: var(--red); font-weight: 900; text-shadow: 0 0 30px rgba(239,68,68,.7); }
+  .slide .stamp { opacity: 0; transform: scale(3) rotate(-20deg); }
+  .slide.active .stamp { animation: stamp .45s ease-out forwards; animation-delay: 1.2s; }
+  @keyframes stamp { to { opacity: 1; transform: none; } }
+  .arrowbig { font-size: 110px; color: var(--gold); font-weight: 900; }
+  .slide.active .flyin { animation: flyin .8s cubic-bezier(.2,.9,.3,1.1) forwards; animation-delay: 2.2s; opacity: 0; transform: translateX(400px); }
+  @keyframes flyin { to { opacity: 1; transform: none; } }
+
+  /* 列表卡 */
+  .lines .ln { display: flex; align-items: center; gap: 24px; background: var(--card); border: 2px solid var(--c); border-radius: 20px;
+    padding: 18px 30px; margin-bottom: 18px; font-size: 32px; }
+  .lines .ln .k { width: 280px; font-weight: 800; color: var(--c); }
+  .lines .ln .emo { font-size: 48px; }
+  .chip { display: inline-block; padding: 14px 26px; margin: 0 14px 18px 0; border-radius: 18px; font-size: 30px; font-weight: 800;
+    border: 2px solid currentColor; background: color-mix(in srgb, currentColor 16%, transparent); }
+  .num1 { position: absolute; left: 18px; top: 18px; width: 52px; height: 52px; border-radius: 50%; background: var(--pink); color: #070b1f;
+    font-weight: 900; font-size: 28px; display: flex; align-items: center; justify-content: center; }
+  .quote { font-size: 48px; font-weight: 800; text-align: left; display: flex; align-items: center; gap: 30px; }
+  .hint { position: fixed; left: 12px; bottom: 8px; font-size: 12px; color: #555; }
+  .btn { display: inline-block; margin-top: 18px; padding: 12px 30px; border-radius: 999px; font-size: 24px; font-weight: 800;
+    background: linear-gradient(90deg, var(--lime), var(--cyan)); color: #070b1f; text-decoration: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- 1 封面 -->
+<section class="slide">
+  <div class="cover">
+    <div class="org in" style="--d:.1">淡江大學教育科技學系 × 翰林出版數位部</div>
+    <h1 class="in" style="--d:.3">數位學習與 AI 相遇</h1>
+    <div class="subt in" style="--d:.55">AI 導入後的數位教學資源之開發工作坊</div>
+    <div class="meta in" style="--d:.8">講師　黃浚昕｜翰林出版數位部<br>2026.11.05（四）　文館 L105</div>
+  </div>
+</section>
+
+<!-- 2 工作坊流程 -->
+<section class="slide">
+  <span class="tag c-cyan">工作坊流程</span>
+  <h2>10:20 → 11:50　我們會一起做這些事</h2>
+  <div class="timeline">
+    <div class="step c-cyan in" style="--d:.2"><div class="tm">10:20</div><div class="dot emo">🧭</div><div class="nm">引導</div><div class="who">黃浚昕</div></div>
+    <div class="step c-cyan in" style="--d:.35"><div class="tm">10:30</div><div class="dot emo">💡</div><div class="nm">發想</div><div class="who">各組</div></div>
+    <div class="step c-pink in" style="--d:.5"><div class="tm">10:45</div><div class="dot emo">✍️</div><div class="nm">第一次<br>製作</div><div class="who">示範＋各組</div></div>
+    <div class="step c-pink in" style="--d:.65"><div class="tm">11:05</div><div class="dot emo">🔁</div><div class="nm">第二次<br>製作</div><div class="who">示範＋各組</div></div>
+    <div class="step c-lime in" style="--d:.8"><div class="tm">11:25</div><div class="dot emo">🎤</div><div class="nm">發表<br>與回饋</div><div class="who">抽三組上台</div></div>
+    <div class="step c-cyan in" style="--d:.95"><div class="tm">11:45</div><div class="dot emo">🏁</div><div class="nm">總結</div><div class="who">黃浚昕</div></div>
+  </div>
+  <div class="bar in" style="--d:1.2">動手做：一張企劃卡 ＋ 一個 AI 小工具</div>
+</section>
+
+<!-- 3 今天的任務 -->
+<section class="slide">
+  <span class="tag c-gold">今天的任務</span>
+  <h2>下課前，每組帶走兩樣東西</h2>
+  <div class="row" style="margin-top:20px;padding:0 140px;gap:60px">
+    <div class="card c-gold in" style="--d:.2"><div class="emo" style="font-size:150px">🃏</div><div class="big t">產品企劃卡</div><div class="small">四個問題想清楚</div></div>
+    <div class="card c-pink in" style="--d:.45"><div class="emo" style="font-size:150px">🤖</div><div class="big t">AI 小工具</div><div class="small">用 Gemini Canvas 做出來</div></div>
+  </div>
+  <div class="in" style="--d:.8;text-align:center;font-size:28px;color:var(--sub);margin-top:26px"><span class="emo">🔗</span>　做完把作品連結上傳課程討論區</div>
+  <div class="pill in" style="--d:1;margin-top:18px">銜接你們的學期專案「打造百萬名師」</div>
+</section>
+
+<!-- 4 草船借箭動畫 -->
+<section class="slide" id="story" style="padding:0">
+  <div id="scene">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#050818"/><stop offset=".62" stop-color="#1b1446"/><stop offset="1" stop-color="#0b1a3a"/></linearGradient>
+        <linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e2550"/><stop offset="1" stop-color="#050a1c"/></linearGradient>
+        <radialGradient id="moon"><stop offset="0" stop-color="#fff7d6"/><stop offset=".6" stop-color="#fde68a"/><stop offset="1" stop-color="#fde68a" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="1600" height="900" fill="url(#sky)"/>
+      <circle cx="980" cy="150" r="100" fill="url(#moon)" opacity=".85"/>
+      <g fill="#fff" opacity=".7"><circle cx="520" cy="90" r="2"/><circle cx="700" cy="160" r="1.6"/><circle cx="900" cy="70" r="2.2"/><circle cx="1100" cy="130" r="1.5"/><circle cx="380" cy="260" r="1.4"/><circle cx="820" cy="240" r="1.8"/></g>
+      <!-- 曹營（右岸） -->
+      <g id="camp">
+        <path d="M1300 560 L1600 520 L1600 620 L1280 620 Z" fill="#0a1027"/>
+        <rect x="1350" y="470" width="200" height="90" fill="#111a3d" stroke="#2c3a75" stroke-width="3"/>
+        <path d="M1340 470 L1450 420 L1560 470 Z" fill="#1a2350" stroke="#2c3a75" stroke-width="3"/>
+        <line x1="1380" y1="470" x2="1380" y2="380" stroke="#8b93c9" stroke-width="4"/>
+        <path d="M1380 382 L1440 396 L1380 412 Z" fill="#ef4444"/>
+        <text x="1396" y="404" font-size="18" fill="#fff" font-weight="900">曹</text>
+        <line x1="1520" y1="470" x2="1520" y2="400" stroke="#8b93c9" stroke-width="4"/>
+        <path d="M1520 402 L1570 414 L1520 428 Z" fill="#ef4444"/>
+        <g fill="#fbbf24"><circle cx="1400" cy="515" r="6"/><circle cx="1450" cy="515" r="6"/><circle cx="1500" cy="515" r="6"/></g>
+      </g>
+      <rect y="600" width="1600" height="300" fill="url(#water)"/>
+      <g id="waves" stroke="#3b82f6" stroke-opacity=".35" stroke-width="3" fill="none"></g>
+      <g id="boats"></g>
+      <g id="arrows"></g>
+    </svg>
+    <div class="fog" style="width:900px;height:220px;left:-200px;top:520px" data-sp="18"></div>
+    <div class="fog" style="width:1100px;height:260px;left:500px;top:600px" data-sp="-12"></div>
+    <div class="fog" style="width:700px;height:180px;left:300px;top:450px" data-sp="9"></div>
+  </div>
+  <div class="scene-title"><span class="tag c-cyan">10:20｜引導</span><h2 style="margin-top:14px">先聽一個故事：草船借箭</h2></div>
+  <div id="counter"><div class="lbl">借到的箭</div><div class="num" id="cnt">0</div></div>
+  <div class="cap" id="cap"></div>
+  <button id="replay">↻ 重播</button>
+</section>
+
+<!-- 5 造箭 → 借箭 -->
+<section class="slide">
+  <span class="tag c-cyan">10:20｜引導</span>
+  <h2>諸葛亮換了一個問題</h2>
+  <div class="vs">
+    <div class="card in" style="--c:var(--red);--d:.2">
+      <div class="emo" style="font-size:120px">🔨</div><div class="word" style="color:#fca5a5">造箭</div><div class="small">任務本身做不到</div>
+      <div class="x stamp">✗</div>
+    </div>
+    <div class="arrowbig in" style="--d:1.8">→</div>
+    <div class="card c-lime flyin">
+      <div class="emo" style="font-size:120px">⛵</div><div class="word" style="color:var(--lime)">借箭</div><div class="small">一個晚上就完成</div>
+    </div>
+  </div>
+  <div class="pill in" style="--d:3">先想清楚任務對不對，再動手</div>
+</section>
+
+<!-- 6 企劃卡四問 -->
+<section class="slide">
+  <span class="tag c-cyan">10:20｜引導</span>
+  <h2>產品企劃卡：四個問題</h2>
+  <div class="row">
+    <div class="card c-cyan in" style="--d:.2"><div style="font-size:30px;font-weight:800">Q1</div><div class="emo" style="font-size:130px;margin-top:20px">🎯</div><div class="big t">給誰用</div></div>
+    <div class="card c-gold in" style="--d:.4"><div style="font-size:30px;font-weight:800">Q2</div><div class="emo" style="font-size:130px;margin-top:20px">⏰</div><div class="big t">什麼時候用</div></div>
+    <div class="card c-pink in" style="--d:.6"><div style="font-size:30px;font-weight:800">Q3</div><div class="emo" style="font-size:130px;margin-top:20px">🧩</div><div class="big t">解決什麼問題</div></div>
+    <div class="card c-lime in" style="--d:.8"><div style="font-size:30px;font-weight:800">Q4</div><div class="emo" style="font-size:130px;margin-top:20px">⭐</div><div class="big t">有什麼特色</div></div>
+  </div>
+</section>
+
+<!-- 7 範例 -->
+<section class="slide">
+  <span class="tag c-cyan">10:20｜引導</span>
+  <h2>拆解範例：AI 評語精靈</h2>
+  <div class="lines">
+    <div class="ln in" style="--c:var(--cyan);--d:.2"><span class="emo">🎯</span><span class="k">給誰用</span>國小導師</div>
+    <div class="ln in" style="--c:var(--gold);--d:.4"><span class="emo">⏰</span><span class="k">什麼時候用</span>期末幫全班寫評語</div>
+    <div class="ln in" style="--c:var(--pink);--d:.6"><span class="emo">🧩</span><span class="k">解決什麼問題</span>一個一個寫太花時間，舊評語怕重複</div>
+    <div class="ln in" style="--c:var(--lime);--d:.8"><span class="emo">⭐</span><span class="k">有什麼特色</span>字數可切換、整班一次產出</div>
+  </div>
+</section>
+
+<!-- 8 發想 -->
+<section class="slide">
+  <span class="tag c-cyan">10:30｜發想 15 分鐘</span>
+  <h2>從「打造百萬名師」找一個問題</h2>
+  <div class="row" style="gap:22px">
+    <div class="card c-cyan in" style="--d:.1"><div class="emo" style="font-size:100px">🩺</div><div class="big t" style="font-size:28px">學習診斷助教</div></div>
+    <div class="card c-gold in" style="--d:.25"><div class="emo" style="font-size:100px">🎙️</div><div class="big t" style="font-size:28px">需求訪談助手</div></div>
+    <div class="card c-pink in" style="--d:.4"><div class="emo" style="font-size:100px">📝</div><div class="big t" style="font-size:28px">教材改寫器</div></div>
+    <div class="card c-lime in" style="--d:.55"><div class="emo" style="font-size:100px">📣</div><div class="big t" style="font-size:28px">課程文案小幫手</div></div>
+    <div class="card c-violet in" style="--d:.7"><div class="emo" style="font-size:100px">🤖</div><div class="big t" style="font-size:28px">學員問答助教</div></div>
+  </div>
+  <div class="small in" style="--d:.9;text-align:center;margin-top:24px">點子參考（也可以自己想）</div>
+  <div class="pill in" style="--d:1.1;color:var(--cyan);background:rgba(34,211,238,.14);border-color:rgba(34,211,238,.5)"><span class="emo">🎯</span>　題目要小，今天做得出來</div>
+</section>
+
+<!-- 9 示範企劃卡 -->
+<section class="slide">
+  <span class="tag c-gold">講師示範｜先拆企劃卡</span>
+  <h2>示範：抽組選號器</h2>
+  <div style="display:flex;gap:40px;align-items:center">
+    <div class="lines" style="flex:1">
+      <div class="ln in" style="--c:var(--cyan);--d:.2"><span class="emo">🎯</span><span class="k">給誰用</span>上課的講師</div>
+      <div class="ln in" style="--c:var(--gold);--d:.4"><span class="emo">⏰</span><span class="k">什麼時候用</span>各組上台發表前</div>
+      <div class="ln in" style="--c:var(--pink);--d:.6"><span class="emo">🧩</span><span class="k">解決什麼問題</span>10 組抽 3 組，公平、不重複</div>
+      <div class="ln in" style="--c:var(--lime);--d:.8"><span class="emo">⭐</span><span class="k">有什麼特色</span>可設組數、數字跳動、抽過不再抽</div>
+    </div>
+    <div class="in" style="--d:1;text-align:center;width:300px"><div class="emo" style="font-size:200px">🎲</div><div style="font-size:30px;font-weight:800;color:var(--gold);margin-top:10px">等一下發表<br>就用它抽組</div></div>
+  </div>
+</section>
+
+<!-- 10 示範① -->
+<section class="slide">
+  <span class="tag c-pink">講師示範①｜隨手寫</span>
+  <h2>如果只丟一句話給 AI……</h2>
+  <div class="card c-pink in" style="--d:.2;flex:none;padding:44px 50px"><div class="quote t"><span class="emo" style="font-size:96px">💬</span>「幫我做一個抽籤的網頁，可以抽組別。」</div></div>
+  <div class="row" style="margin-top:40px">
+    <div class="card c-gold in" style="--d:.8;padding:20px"><div class="big" style="margin:0"><span class="emo">🤔</span> 抽幾組？</div></div>
+    <div class="card c-gold in" style="--d:1.1;padding:20px"><div class="big" style="margin:0"><span class="emo">🔁</span> 會不會重複？</div></div>
+    <div class="card c-gold in" style="--d:1.4;padding:20px"><div class="big" style="margin:0"><span class="emo">👀</span> 後排看得到嗎？</div></div>
+  </div>
+  <div class="small in" style="--d:1.8;text-align:center;font-size:30px;margin-top:34px;font-weight:700">AI 照字面做事：你沒說的，它只能用猜的</div>
+</section>
+
+<!-- 11 第一次製作 -->
+<section class="slide">
+  <span class="tag c-pink">10:45｜第一次製作 20 分鐘</span>
+  <h2>第一次：自己寫提示詞</h2>
+  <div class="row">
+    <div class="card c-pink in" style="--d:.2"><div class="num1">1</div><div class="emo" style="font-size:120px;margin-top:20px">🌐</div><div class="big t">打開 Gemini</div><div class="small">gemini.google.com</div></div>
+    <div class="card c-pink in" style="--d:.4"><div class="num1">2</div><div class="emo" style="font-size:120px;margin-top:20px">🖱️</div><div class="big t">點 Canvas</div><div class="small">輸入框下方</div></div>
+    <div class="card c-pink in" style="--d:.6"><div class="num1">3</div><div class="emo" style="font-size:120px;margin-top:20px">⌨️</div><div class="big t">自己寫提示詞</div><div class="small">照企劃卡四格</div></div>
+    <div class="card c-pink in" style="--d:.8"><div class="num1">4</div><div class="emo" style="font-size:120px;margin-top:20px">👀</div><div class="big t">預覽、試用</div><div class="small">填入範例測一次</div></div>
+  </div>
+  <div class="in" style="--d:1.1;text-align:center;font-size:30px;font-weight:800;color:var(--pink);margin-top:40px">做出「初始版」就好，中途會抽 1–2 組分享做法</div>
+</section>
+
+<!-- 12 示範② -->
+<section class="slide">
+  <span class="tag c-pink">講師示範②｜套用框架</span>
+  <h2>把企劃卡填進框架，再依需求修改</h2>
+  <div style="display:flex;gap:40px">
+    <div style="flex:1;font-size:30px;line-height:2.05">
+      <div class="in" style="--d:.2"><b style="color:var(--cyan)">【工具名稱】</b>抽組選號器</div>
+      <div class="in" style="--d:.35"><b style="color:var(--cyan)">【給誰用】</b>上課的講師</div>
+      <div class="in" style="--d:.5"><b style="color:var(--cyan)">【什麼時候用】</b>發表前</div>
+      <div class="in" style="--d:.65"><b style="color:var(--cyan)">【要解決的問題】</b>10 組抽 3 組，公平、不重複</div>
+      <div class="in" style="--d:.8"><b style="color:var(--cyan)">【特色】</b>可設組數、動畫、一鍵重來</div>
+    </div>
+    <div class="card c-gold in" style="--d:1.1;flex:none;width:600px;text-align:left;padding:30px 34px">
+      <div style="font-size:34px;font-weight:900">✎ 依需求修改</div>
+      <div class="t" style="font-size:27px;line-height:1.9;margin-top:10px">• 不需要 AI 產出 → 改成隨機抽<br>• 規則：抽過的不能重複<br>• 畫面：數字要大，後排看得到<br>• 加一顆「重來」按鈕</div>
+    </div>
+  </div>
+  <div class="pill in" style="--d:1.5;color:var(--pink);background:rgba(244,114,182,.14);border-color:rgba(244,114,182,.5)">框架給結構，內容由你決定</div>
+</section>
+
+<!-- 13 第二次製作 -->
+<section class="slide">
+  <span class="tag c-pink">11:05｜第二次製作 20 分鐘</span>
+  <h2>第二次：套用講師的提示詞框架</h2>
+  <div class="in" style="--d:.2">
+    <span class="chip c-cyan">【工具名稱】</span><span class="chip c-cyan">【給誰用】</span><span class="chip c-cyan">【什麼時候用】</span>
+    <span class="chip c-cyan">【要解決的問題】</span><span class="chip c-cyan">【特色】</span><span class="chip c-gold">【規則】</span><span class="chip c-pink">【畫面需求】</span>
+  </div>
+  <div class="small in" style="--d:.5;font-size:26px">企劃卡填進去 ＋ 規則 ＋ 畫面需求</div>
+  <div class="card c-gold in" style="--d:.8;flex:none;margin-top:36px;text-align:left;display:flex;align-items:center;gap:30px">
+    <span class="emo" style="font-size:100px">🧱</span><div style="font-size:38px;font-weight:900;line-height:1.5">框架不是標準答案，可以依需求修改<br>這就是人機協作</div>
+  </div>
+</section>
+
+<!-- 14 接去合 -->
+<section class="slide">
+  <span class="tag c-pink">11:05｜比較兩次產出</span>
+  <h2>接、去、合</h2>
+  <div class="row">
+    <div class="card c-lime in" style="--d:.2"><div style="display:flex;align-items:center;justify-content:center;gap:30px"><span class="emo" style="font-size:110px">👍</span><span style="font-size:150px;font-weight:900">接</span></div><div class="big t">做得好的部分<br>接受</div></div>
+    <div class="card c-pink in" style="--d:.6"><div style="display:flex;align-items:center;justify-content:center;gap:30px"><span class="emo" style="font-size:110px">✂️</span><span style="font-size:150px;font-weight:900">去</span></div><div class="big t">不合實際情境的<br>去掉</div></div>
+    <div class="card c-cyan in" style="--d:1"><div style="display:flex;align-items:center;justify-content:center;gap:30px"><span class="emo" style="font-size:110px">🔗</span><span style="font-size:150px;font-weight:900">合</span></div><div class="big t">把兩者<br>合在一起</div></div>
+  </div>
+  <div class="small in" style="--d:1.4;text-align:center;font-size:28px;margin-top:30px">哪裡不對，就在對話框直接說要改什麼，再測一次</div>
+</section>
+
+<!-- 15 Delta -->
+<section class="slide">
+  <span class="tag c-gold">11:05｜這堂課最想讓你體會的事</span>
+  <h2>從初始版到修訂版，你的想法前進了多少？</h2>
+  <div style="display:flex;align-items:center;gap:40px;margin-top:30px">
+    <div class="card c-violet in" style="--d:.2;flex:none;width:420px"><div class="emo" style="font-size:130px">🌱</div><div class="big t">初始版</div><div class="small">自己寫</div></div>
+    <div class="in" style="--d:.8;flex:1;text-align:center"><div style="font-size:56px;font-weight:900;color:var(--gold)">Δ 思考增量</div><div style="height:10px;background:linear-gradient(90deg,var(--violet),var(--gold),var(--lime));border-radius:6px;margin-top:20px"></div></div>
+    <div class="card c-lime in" style="--d:1.4;flex:none;width:420px"><div class="emo" style="font-size:130px">🌳</div><div class="big t">修訂版</div><div class="small">框架＋接去合</div></div>
+  </div>
+  <div class="in" style="--d:1.9;text-align:center;font-size:44px;font-weight:900;margin-top:50px">人負責判斷，AI 負責加速</div>
+</section>
+
+<!-- 16 發表 -->
+<section class="slide">
+  <span class="tag c-lime">11:25｜發表與回饋 20 分鐘</span>
+  <h2>用選號器抽 3 組上台，每組 2–3 分鐘</h2>
+  <div style="display:flex;gap:50px;align-items:center">
+    <div class="in" style="--d:.2;text-align:center;width:320px"><div class="emo" style="font-size:220px">🎲</div><div style="font-size:30px;font-weight:800;color:var(--lime)">剛剛示範做的</div><a class="btn" href="picker.html" target="_blank">開啟備案選號器</a></div>
+    <div class="lines" style="flex:1">
+      <div class="ln in" style="--c:var(--lime);--d:.5"><span class="k" style="width:50px">1</span><span class="emo">🖥️</span>工具畫面</div>
+      <div class="ln in" style="--c:var(--lime);--d:.7"><span class="k" style="width:50px">2</span><span class="emo">🧩</span>解決什麼問題</div>
+      <div class="ln in" style="--c:var(--lime);--d:.9"><span class="k" style="width:50px">3</span><span class="emo">✨</span>亮點在哪裡</div>
+      <div class="small in" style="--d:1.2;font-size:26px;line-height:1.6">經理與講師從業界角度回饋<br>沒抽到的組：作品連結上傳討論區</div>
+    </div>
+  </div>
+</section>
+
+<!-- 17 總結 -->
+<section class="slide">
+  <span class="tag c-cyan">11:45｜總結</span>
+  <h2>帶走三件事</h2>
+  <div class="row">
+    <div class="card c-cyan in" style="--d:.2"><div class="emo" style="font-size:130px">🔍</div><div class="big t">先找出問題</div></div>
+    <div class="card c-gold in" style="--d:.5"><div class="emo" style="font-size:130px">📏</div><div class="big t">把規則寫清楚</div></div>
+    <div class="card c-pink in" style="--d:.8"><div class="emo" style="font-size:130px">🛡️</div><div class="big t">由人做最後把關</div></div>
+  </div>
+  <div class="pill in" style="--d:1.2"><span class="emo">⛵</span>　像諸葛亮一樣：不要只當指令的輸入員</div>
+</section>
+
+<!-- 18 Q&A -->
+<section class="slide">
+  <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center">
+    <div class="emo in" style="--d:.1;font-size:200px">🙋</div>
+    <div class="in" style="--d:.4;font-size:130px;font-weight:900">Q &amp; A</div>
+    <div class="in" style="--d:.7;font-size:44px;font-weight:800;color:var(--cyan)">謝謝大家！</div>
+  </div>
+</section>
+
+</div>
+<div class="hint">← → 換頁　F 全螢幕</div>
+
+<script>
+  // ── 舞台縮放 ──
+  const stage = document.getElementById("stage");
+  function fit() {
+    const k = Math.min(innerWidth / 1600, innerHeight / 900);
+    stage.style.transform = `translate(-50%,-50%) scale(${k})`;
+  }
+  addEventListener("resize", fit); fit();
+
+  // ── 換頁 ──
+  const slides = [...document.querySelectorAll(".slide")];
+  slides.forEach((s, i) => {
+    if (i === 0 || s.id === "story") return;
+    const f = document.createElement("div");
+    f.className = "foot";
+    f.innerHTML = `<span>數位學習與 AI 相遇｜淡江教科系 × 翰林出版數位部</span><span>${String(i + 1).padStart(2, "0")}</span>`;
+    s.appendChild(f);
+  });
+  let cur = 0;
+  function go(n) {
+    n = Math.max(0, Math.min(slides.length - 1, n));
+    slides[cur].classList.remove("active");
+    cur = n;
+    // 重新觸發進場動畫
+    void slides[cur].offsetWidth;
+    slides[cur].classList.add("active");
+    location.hash = cur + 1;
+    if (slides[cur].id === "story") story.play(); else story.stop();
+  }
+  addEventListener("keydown", (e) => {
+    if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) go(cur + 1);
+    if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) go(cur - 1);
+    if (e.key === "Home") go(0);
+    if (e.key === "End") go(slides.length - 1);
+    if (e.key === "f" || e.key === "F") document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener("click", (e) => {
+    if (e.target.closest("a,button")) return;
+    e.clientX > innerWidth / 3 ? go(cur + 1) : go(cur - 1);
+  });
+
+  // ── 草船借箭動畫 ──
+  const story = (() => {
+    const NS = "http://www.w3.org/2000/svg";
+    const boatsG = document.getElementById("boats"), arrowsG = document.getElementById("arrows"), wavesG = document.getElementById("waves");
+    const cap = document.getElementById("cap"), cnt = document.getElementById("cnt");
+    const fogs = [...document.querySelectorAll(".fog")];
+    const TARGET = 100000;
+    let raf = 0, t0 = 0, boats = [], flying = [], timers = [], stuck = 0, nextShot = 0;
+
+    // 水波
+    for (let i = 0; i < 7; i++) {
+      const p = document.createElementNS(NS, "path");
+      p.dataset.y = 640 + i * 38; p.dataset.ph = i * 1.3;
+      wavesG.appendChild(p);
+    }
+    function drawWaves(t) {
+      [...wavesG.children].forEach((p) => {
+        const y = +p.dataset.y, ph = +p.dataset.ph; let d = "";
+        for (let x = 0; x <= 1600; x += 40) d += (x ? " L" : "M") + x + " " + (y + Math.sin(x / 90 + t * 1.6 + ph) * 6).toFixed(1);
+        p.setAttribute("d", d);
+      });
+    }
+
+    // 草船：船身＋草人一排
+    function makeBoat(i) {
+      const g = document.createElementNS(NS, "g");
+      g.innerHTML = `
+        <path d="M-150 0 L150 0 L120 46 L-120 46 Z" fill="#5b3a1e" stroke="#8a5a2b" stroke-width="4"/>
+        <rect x="-6" y="-170" width="10" height="172" fill="#7c5a36"/>
+        <path d="M4 -165 L95 -110 L4 -55 Z" fill="#e5e7eb" opacity=".85"/>
+        ${[-110, -70, -30, 30, 70, 110].map((x) => `
+          <g transform="translate(${x},0)">
+            <ellipse cx="0" cy="-34" rx="17" ry="36" fill="#caa25a"/>
+            <circle cx="0" cy="-78" r="12" fill="#d9b56c"/>
+            <path d="M-14 -92 L0 -104 L14 -92 Z" fill="#a37b3b"/>
+          </g>`).join("")}
+        <g class="stuck"></g>`;
+      g.dataset.i = i;
+      boatsG.appendChild(g);
+      return { g, x: -400 - i * 320, tx: 220 + i * 300, y: 640 + (i % 2) * 40, stuckG: g.querySelector(".stuck") };
+    }
+
+    function shoot() {
+      const b = boats[Math.floor(Math.random() * boats.length)];
+      const ln = document.createElementNS(NS, "g");
+      ln.innerHTML = `<line x1="0" y1="0" x2="46" y2="0" stroke="#e5e7eb" stroke-width="3"/><path d="M0 0 L10 -5 L10 5 Z" fill="#cbd5e1"/><path d="M40 0 L52 -7 M40 0 L52 7" stroke="#f87171" stroke-width="3"/>`;
+      arrowsG.appendChild(ln);
+      const hitX = b.x + (Math.random() * 240 - 120), hitY = b.y - 20 - Math.random() * 70;
+      flying.push({ el: ln, b, sx: 1380 + Math.random() * 120, sy: 470 + Math.random() * 40, ex: hitX, ey: hitY, t: 0, dur: .7 + Math.random() * .35, ox: hitX - b.x, oy: hitY - b.y });
+    }
+
+    function say(text, color) { cap.textContent = text; cap.style.color = color || "#f8fafc"; cap.classList.add("show"); }
+
+    function frame(now) {
+      if (!t0) t0 = now;
+      const t = (now - t0) / 1000;
+      drawWaves(t);
+      fogs.forEach((f, i) => f.style.transform = `translateX(${Math.sin(t / 3 + i) * +f.dataset.sp * 3}px)`);
+      // 船駛入
+      boats.forEach((b, i) => {
+        const k = Math.min(1, Math.max(0, (t - 1.5 - i * .3) / 3.2));
+        const e = 1 - Math.pow(1 - k, 3);
+        b.x = -400 - i * 320 + (b.tx + 400 + i * 320) * e;
+        const bob = Math.sin(t * 2 + i) * 5;
+        b.g.setAttribute("transform", `translate(${b.x.toFixed(1)},${(b.y + bob).toFixed(1)}) rotate(${Math.sin(t * 1.5 + i) * 1.5})`);
+      });
+      // 放箭（6.5 秒到 13 秒）
+      if (t > 6.5 && t < 13 && t > nextShot) { const n = 1 + Math.floor((t - 6.5) * .9); for (let k = 0; k < n; k++) shoot(); nextShot = t + .12; }
+      flying = flying.filter((a) => {
+        a.t += 1 / 60;
+        const k = Math.min(1, a.t / a.dur);
+        const tx = a.b.x + a.ox, ty = a.b.y + a.oy;
+        const x = a.sx + (tx - a.sx) * k, y = a.sy + (ty - a.sy) * k - Math.sin(k * Math.PI) * 120;
+        const dx = (tx - a.sx), dy = (ty - a.sy) - Math.cos(k * Math.PI) * 120 * Math.PI;
+        const ang = Math.atan2(dy, dx) * 180 / Math.PI + 180;
+        a.el.setAttribute("transform", `translate(${x.toFixed(1)},${y.toFixed(1)}) rotate(${ang.toFixed(1)})`);
+        if (k >= 1) {
+          a.el.remove();
+          const s = document.createElementNS(NS, "g");
+          s.setAttribute("transform", `translate(${a.ox.toFixed(1)},${a.oy.toFixed(1)}) rotate(${(-15 + Math.random() * 30).toFixed(1)})`);
+          s.innerHTML = `<line x1="0" y1="0" x2="34" y2="0" stroke="#e5e7eb" stroke-width="3"/><path d="M28 0 L38 -6 M28 0 L38 6" stroke="#f87171" stroke-width="3"/>`;
+          a.b.stuckG.appendChild(s);
+          stuck++;
+          return false;
+        }
+        return true;
+      });
+      // 計數器（插上的箭越多，數字越接近十萬）
+      const shown = t < 6.5 ? 0 : Math.min(TARGET, Math.round(TARGET * Math.min(1, (t - 6.5) / 7.5) ** 1.6));
+      cnt.textContent = shown.toLocaleString();
+      if (t < 18) raf = requestAnimationFrame(frame); else raf = requestAnimationFrame(frame);
+    }
+
+    function stop() { cancelAnimationFrame(raf); timers.forEach(clearTimeout); timers = []; }
+    function play() {
+      stop();
+      boatsG.innerHTML = ""; arrowsG.innerHTML = ""; flying = []; stuck = 0; nextShot = 0; t0 = 0;
+      boats = [0, 1, 2, 3].map(makeBoat);
+      cnt.textContent = "0"; cap.classList.remove("show");
+      timers.push(setTimeout(() => say("周瑜：三天內，造好十萬支箭"), 300));
+      timers.push(setTimeout(() => say("照原本的方法：根本做不到", "#fca5a5"), 3600));
+      timers.push(setTimeout(() => say("諸葛亮：大霧夜，草船開向曹營……", "#c7d2fe"), 6200));
+      timers.push(setTimeout(() => say("曹軍放箭！箭都插在草人身上", "#fbbf24"), 9500));
+      timers.push(setTimeout(() => say("不造箭，去借箭 —— 一個晚上就完成", "#a3e635"), 14200));
+      raf = requestAnimationFrame(frame);
+    }
+    document.getElementById("replay").onclick = (e) => { e.stopPropagation(); play(); };
+    return { play, stop };
+  })();
+
+  go(Math.max(0, (parseInt(location.hash.slice(1), 10) || 1) - 1));
+</script>
+</body>
+</html>
