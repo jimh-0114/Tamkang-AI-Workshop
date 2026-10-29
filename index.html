@@ -114,6 +114,28 @@
   .reveal.on { opacity: 1; transform: none; }
   .reveal .a { opacity: 0; transform: translateX(40px); transition: opacity .5s .35s, transform .5s .35s; }
   .reveal.on .a { opacity: 1; transform: none; }
+  /* 示範提醒 */
+  .demo-flag { position: absolute; right: 72px; top: 52px; padding: 12px 26px; border-radius: 999px; font-size: 26px; font-weight: 900;
+    color: #070b1f; background: linear-gradient(90deg, var(--gold), var(--pink)); animation: blink 1.2s ease-in-out infinite; z-index: 5; }
+  @keyframes blink { 50% { box-shadow: 0 0 34px rgba(251,191,36,.9); transform: scale(1.06); } }
+  .copy { margin-top: 16px; padding: 12px 28px; border-radius: 999px; font-size: 22px; font-weight: 800; cursor: pointer; font-family: inherit;
+    border: 2px solid var(--gold); background: rgba(251,191,36,.15); color: var(--gold); }
+  .copy.done { background: var(--lime); color: #070b1f; border-color: var(--lime); }
+  /* 倒數計時 */
+  .timer-wrap { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .timer-wrap .what { font-size: 44px; font-weight: 900; }
+  .timer-wrap .todo { font-size: 28px; color: var(--sub); margin-top: 12px; line-height: 1.6; }
+  .clock { font-size: 260px; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: 6px; margin: 10px 0 6px;
+    color: var(--cyan); text-shadow: 0 0 40px rgba(34,211,238,.55); }
+  .clock.warn { color: var(--gold); text-shadow: 0 0 40px rgba(251,191,36,.6); }
+  .clock.last { color: var(--red); text-shadow: 0 0 46px rgba(239,68,68,.7); }
+  .clock.over { animation: flash .6s steps(2) infinite; color: var(--red); }
+  @keyframes flash { 50% { opacity: .2; } }
+  .tbtns button { font-family: inherit; font-size: 28px; font-weight: 800; padding: 12px 38px; margin: 0 10px; border-radius: 999px; cursor: pointer;
+    border: 2px solid #3b4380; background: rgba(255,255,255,.06); color: var(--txt); }
+  .tbtns .go { background: linear-gradient(90deg, var(--cyan), var(--pink)); color: #070b1f; border: none; }
+  .tbar { width: 900px; height: 14px; border-radius: 8px; background: #2a3166; margin: 20px auto 0; overflow: hidden; }
+  .tbar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, var(--lime), var(--cyan)); transition: width .9s linear; }
   .hint { position: fixed; left: 12px; bottom: 8px; font-size: 12px; color: #555; }
   .btn { display: inline-block; margin-top: 18px; padding: 12px 30px; border-radius: 999px; font-size: 24px; font-weight: 800;
     background: linear-gradient(90deg, var(--lime), var(--cyan)); color: #070b1f; text-decoration: none; }
@@ -243,8 +265,21 @@
   <div class="pill in" style="--d:1.1;color:var(--cyan);background:rgba(34,211,238,.14);border-color:rgba(34,211,238,.5)"><span class="emo">🎯</span>　題目要小，今天做得出來</div>
 </section>
 
+<!-- 發想討論倒數 -->
+<section class="slide">
+  <span class="tag c-cyan">10:30｜發想討論</span>
+  <div class="timer-wrap">
+    <div class="what">各組討論：找一個問題，填好企劃卡四格</div>
+    <div class="todo">給誰用？什麼時候用？解決什麼問題？有什麼特色？</div>
+    <div class="clock" data-min="15">15:00</div>
+    <div class="tbtns"><button class="go">▶ 開始</button><button class="reset">↺ 重設</button></div>
+    <div class="tbar"><i></i></div>
+  </div>
+</section>
+
 <!-- 9 示範企劃卡 -->
 <section class="slide">
+  <div class="demo-flag">🎬 換你示範</div>
   <span class="tag c-gold">講師示範｜先拆企劃卡</span>
   <h2>示範：抽組選號器</h2>
   <div style="display:flex;gap:40px;align-items:center">
@@ -260,9 +295,11 @@
 
 <!-- 10 示範① -->
 <section class="slide">
+  <div class="demo-flag">🎬 換你示範</div>
   <span class="tag c-pink">講師示範①｜隨手寫</span>
   <h2>如果只丟一句話給 AI……</h2>
   <div class="card c-pink in" style="--d:.2;flex:none;padding:44px 50px"><div class="quote t"><span class="emo" style="font-size:96px">💬</span>「幫我做一個抽籤的網頁，可以抽組別。」</div></div>
+  <div style="text-align:center"><button class="copy" data-text="幫我做一個抽籤的網頁，可以抽組別。">📋 複製提示詞（隨手版）</button></div>
   <div class="row" style="margin-top:40px">
     <div class="card c-gold in" style="--d:.8;padding:20px"><div class="big" style="margin:0"><span class="emo">🤔</span> 抽幾組？</div></div>
     <div class="card c-gold in" style="--d:1.1;padding:20px"><div class="big" style="margin:0"><span class="emo">🔁</span> 會不會重複？</div></div>
@@ -284,8 +321,21 @@
   <div class="in" style="--d:1.1;text-align:center;font-size:30px;font-weight:800;color:var(--pink);margin-top:40px">做出「初始版」就好，中途會抽 1–2 組分享做法</div>
 </section>
 
+<!-- 第一次製作倒數 -->
+<section class="slide">
+  <span class="tag c-pink">10:45｜第一次製作</span>
+  <div class="timer-wrap">
+    <div class="what">第一次：自己寫提示詞，做出初始版</div>
+    <div class="todo">打開 Gemini → 點 Canvas → 照企劃卡寫提示詞 → 預覽、試用</div>
+    <div class="clock" data-min="15">15:00</div>
+    <div class="tbtns"><button class="go">▶ 開始</button><button class="reset">↺ 重設</button></div>
+    <div class="tbar"><i></i></div>
+  </div>
+</section>
+
 <!-- 12 示範② -->
 <section class="slide">
+  <div class="demo-flag">🎬 換你示範</div>
   <span class="tag c-pink">講師示範②｜套用框架</span>
   <h2>把企劃卡填進框架，再依需求修改</h2>
   <div style="display:flex;gap:40px">
@@ -301,7 +351,22 @@
       <div class="t" style="font-size:27px;line-height:1.9;margin-top:10px">• 不需要 AI 產出 → 改成隨機抽<br>• 規則：抽過的不能重複<br>• 畫面：數字要大，後排看得到<br>• 加一顆「重來」按鈕</div>
     </div>
   </div>
-  <div class="pill in" style="--d:1.5;color:var(--pink);background:rgba(244,114,182,.14);border-color:rgba(244,114,182,.5)">框架給結構，內容由你決定</div>
+  <div style="text-align:center"><button class="copy" data-text="請幫我用 Canvas 做一個可以直接在網頁上操作的小工具，介面使用繁體中文。工具依使用者的設定，隨機抽出組別。
+【工具名稱】抽組選號器
+【給誰用】上課的講師
+【什麼時候用】各組上台發表前，抽出要上台的組別
+【要解決的問題】全班有 10 組，時間只夠 3 組上台。口頭點名不夠公平，紙籤要準備又慢，還可能抽到重複的組。
+【特色】可以設定總組數和一次抽幾組；抽的時候有數字跳動的動畫；抽過的組不會再被抽到；可以一鍵重來。
+請依照上面的情境，幫我設計使用者要輸入的欄位，以及工具要產出的內容。
+【規則】
+1. 抽出的組別不能重複。
+2. 剩下的組別不夠時，畫面要提醒。
+【畫面需求】
+1. 設定區與抽組結果放在同一個畫面，按一個按鈕就能抽。
+2. 數字要大，教室最後一排也看得清楚。
+3. 按鈕與說明文字要清楚，第一次使用的人也看得懂。
+4. 有「重來」按鈕，可以清空重新抽。">📋 複製提示詞（框架版）</button></div>
+  <div class="pill in"  style="--d:1.5;color:var(--pink);background:rgba(244,114,182,.14);border-color:rgba(244,114,182,.5)">框架給結構，內容由你決定</div>
 </section>
 
 <!-- 13 第二次製作 -->
@@ -330,6 +395,18 @@
   <div class="small in" style="--d:1.4;text-align:center;font-size:28px;margin-top:30px">哪裡不對，就在對話框直接說要改什麼，再測一次</div>
 </section>
 
+<!-- 第二次製作倒數 -->
+<section class="slide">
+  <span class="tag c-pink">11:05｜第二次製作</span>
+  <div class="timer-wrap">
+    <div class="what">第二次：套用框架，再用「接、去、合」修改</div>
+    <div class="todo">附錄四的框架 → 填企劃卡 → 依需求修改 → 比較兩次產出</div>
+    <div class="clock" data-min="15">15:00</div>
+    <div class="tbtns"><button class="go">▶ 開始</button><button class="reset">↺ 重設</button></div>
+    <div class="tbar"><i></i></div>
+  </div>
+</section>
+
 <!-- 15 Delta -->
 <section class="slide">
   <span class="tag c-gold">11:05｜這堂課最想讓你體會的事</span>
@@ -354,6 +431,18 @@
       <div class="ln in" style="--c:var(--lime);--d:.9"><span class="k" style="width:50px">3</span><span class="emo">✨</span>亮點在哪裡</div>
       <div class="small in" style="--d:1.2;font-size:26px;line-height:1.6">經理與講師從業界角度回饋<br>沒抽到的組：作品連結上傳討論區</div>
     </div>
+  </div>
+</section>
+
+<!-- 上台倒數 -->
+<section class="slide">
+  <span class="tag c-lime">11:25｜上台發表</span>
+  <div class="timer-wrap">
+    <div class="what">每組 2–3 分鐘</div>
+    <div class="todo">工具畫面 → 解決什麼問題 → 亮點在哪裡　（換下一組按「重設」）</div>
+    <div class="clock" data-min="3">03:00</div>
+    <div class="tbtns"><button class="go">▶ 開始</button><button class="reset">↺ 重設</button></div>
+    <div class="tbar"><i></i></div>
   </div>
 </section>
 
@@ -541,6 +630,41 @@
     document.getElementById("replay").onclick = (e) => { e.stopPropagation(); play(); };
     return { play, stop };
   })();
+
+  // ── 複製提示詞 ──
+  document.querySelectorAll(".copy").forEach((b) => b.addEventListener("click", async (e) => {
+    e.stopPropagation();
+    const t = b.dataset.text;
+    try { await navigator.clipboard.writeText(t); }
+    catch { const ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
+    const old = b.textContent; b.textContent = "✓ 已複製，貼到 Gemini"; b.classList.add("done");
+    setTimeout(() => { b.textContent = old; b.classList.remove("done"); }, 2500);
+  }));
+
+  // ── 倒數計時：按開始才跑；剩 3 分變金、剩 1 分變紅、時間到閃爍＋提示音 ──
+  function beep() {
+    try { const a = new AudioContext(); [0, .35, .7].forEach((d) => { const o = a.createOscillator(), g = a.createGain();
+      o.frequency.value = 880; o.connect(g); g.connect(a.destination); g.gain.value = .25; o.start(a.currentTime + d); o.stop(a.currentTime + d + .22); }); } catch {}
+  }
+  document.querySelectorAll(".timer-wrap").forEach((w) => {
+    const clock = w.querySelector(".clock"), bar = w.querySelector(".tbar i"), go = w.querySelector(".go");
+    const total = +clock.dataset.min * 60; let left = total, id = 0;
+    const show = () => {
+      const m = Math.floor(Math.max(left, 0) / 60), sec = Math.max(left, 0) % 60;
+      clock.textContent = String(m).padStart(2, "0") + ":" + String(sec).padStart(2, "0");
+      clock.className = "clock" + (left <= 0 ? " over" : left <= 60 ? " last" : left <= 180 && total > 300 ? " warn" : "");
+      bar.style.width = (Math.max(left, 0) / total * 100) + "%";
+    };
+    const stop = () => { clearInterval(id); id = 0; go.textContent = "▶ 開始"; };
+    go.onclick = (e) => { e.stopPropagation();
+      if (id) { stop(); return; }
+      if (left <= 0) left = total;
+      go.textContent = "⏸ 暫停";
+      id = setInterval(() => { left--; show(); if (left === 0) { beep(); stop(); } }, 1000);
+    };
+    w.querySelector(".reset").onclick = (e) => { e.stopPropagation(); stop(); left = total; show(); };
+    show();
+  });
 
   go(Math.max(0, (parseInt(location.hash.slice(1), 10) || 1) - 1));
 </script>
