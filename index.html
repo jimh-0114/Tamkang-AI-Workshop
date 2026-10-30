@@ -344,7 +344,6 @@
     <div class="card c-pink in" style="--d:.6"><div style="display:flex;align-items:center;justify-content:center;gap:30px"><span class="emo" style="font-size:110px">✂️</span><span style="font-size:150px;font-weight:900">去</span></div><div class="big t">不合實際情境的<br>去掉</div></div>
     <div class="card c-cyan in" style="--d:1"><div style="display:flex;align-items:center;justify-content:center;gap:30px"><span class="emo" style="font-size:110px">🔗</span><span style="font-size:150px;font-weight:900">合</span></div><div class="big t">把兩者<br>合在一起</div></div>
   </div>
-  <div class="small in" style="--d:1.4;text-align:center;font-size:28px;margin-top:30px">初始版 ＋ 講師的框架，用接、去、合做出修訂版</div>
 </section>
 
 
@@ -568,16 +567,14 @@
     if (on.length) on[on.length - 1].classList.remove("on"); else go(cur - 1);
   }
   addEventListener("keydown", (e) => {
+    if ([" ", "Enter"].includes(e.key)) e.preventDefault();  // 避免按到剛點過的按鈕（開始、複製）
     if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) next();
     if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) prev();
     if (e.key === "Home") go(0);
     if (e.key === "End") go(slides.length - 1);
     if (e.key === "f" || e.key === "F") document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
   });
-  addEventListener("click", (e) => {
-    if (e.target.closest("a,button")) return;
-    e.clientX > innerWidth / 3 ? next() : prev();
-  });
+  // 10-30 Jim：只用鍵盤換頁，滑鼠點畫面不換頁（避免不小心換頁）
 
   // ── 草船借箭動畫 ──
   const story = (() => {
