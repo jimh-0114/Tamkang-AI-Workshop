@@ -133,7 +133,7 @@
   .idea-row { display: flex; gap: 70px; align-items: center; margin-top: 36px; }
   .qlist { display: flex; flex-direction: column; gap: 18px; text-align: left; }
   .ql { display: flex; align-items: center; gap: 18px; padding: 16px 28px; border: 2px solid var(--c); border-radius: 20px; font-size: 30px; background: rgba(15,20,50,.6); }
-  .ql .emo { font-size: 42px; } .ql b { color: var(--c); width: 210px; font-size: 32px; }
+  .ql .emo { font-size: 42px; } .ql b { color: var(--c); width: 270px; font-size: 32px; white-space: nowrap; }
   .idea-clock .clock { font-size: 200px; } .idea-clock .tbar { width: 560px; }
   .timer-wrap .todo { font-size: 28px; color: var(--sub); margin-top: 12px; line-height: 1.6; }
   .clock { font-size: 260px; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: 6px; margin: 10px 0 6px;
@@ -312,28 +312,24 @@
   <div class="small in" style="--d:1.8;text-align:center;font-size:30px;margin-top:34px;font-weight:700">AI 照字面做事：你沒說的，它只能用猜的</div>
 </section>
 
-<!-- 11 第一次製作 -->
-<section class="slide">
-  <span class="tag c-pink">10:45｜第一次製作 20 分鐘</span>
-  <h2>第一次：自己寫提示詞</h2>
-  <div class="row">
-    <div class="card c-pink in" style="--d:.2"><div class="num1">1</div><div class="emo" style="font-size:120px;margin-top:20px">🌐</div><div class="big t">打開 Gemini</div><div class="small">gemini.google.com</div></div>
-    <div class="card c-pink in" style="--d:.4"><div class="num1">2</div><div class="emo" style="font-size:120px;margin-top:20px">🖱️</div><div class="big t">點 Canvas</div><div class="small">輸入框下方</div></div>
-    <div class="card c-pink in" style="--d:.6"><div class="num1">3</div><div class="emo" style="font-size:120px;margin-top:20px">⌨️</div><div class="big t">自己寫提示詞</div><div class="small">照企劃卡四格</div></div>
-    <div class="card c-pink in" style="--d:.8"><div class="num1">4</div><div class="emo" style="font-size:120px;margin-top:20px">👀</div><div class="big t">預覽、試用</div><div class="small">填入範例測一次</div></div>
-  </div>
-  <div class="in" style="--d:1.1;text-align:center;font-size:30px;font-weight:800;color:var(--pink);margin-top:40px">做出「初始版」就好，中途會抽 1–2 組分享做法</div>
-</section>
-
-<!-- 第一次製作倒數 -->
+<!-- 11 第一次製作（步驟＋倒數合成一頁，版型同發想討論） -->
 <section class="slide">
   <span class="tag c-pink">10:45｜第一次製作</span>
   <div class="timer-wrap">
-    <div class="what">第一次：自己寫提示詞，做出初始版</div>
-    <div class="todo">打開 Gemini → 點 Canvas → 照企劃卡寫提示詞 → 預覽、試用</div>
-    <div class="clock" data-min="15">15:00</div>
-    <div class="tbtns"><button class="go">▶ 開始</button><button class="reset">↺ 重設</button></div>
-    <div class="tbar"><i></i></div>
+    <div class="what">第一次：自己寫提示詞，做出「初始版」就好</div>
+    <div class="idea-row">
+      <div class="qlist">
+        <div class="ql" style="--c:var(--pink)"><span class="emo">🌐</span><b>1 打開 Gemini</b><span>gemini.google.com</span></div>
+        <div class="ql" style="--c:var(--pink)"><span class="emo">🖱️</span><b>2 點 Canvas</b><span>輸入框下方</span></div>
+        <div class="ql" style="--c:var(--pink)"><span class="emo">⌨️</span><b>3 自己寫提示詞</b><span>照企劃卡四格</span></div>
+        <div class="ql" style="--c:var(--pink)"><span class="emo">👀</span><b>4 預覽、試用</b><span>填入範例測一次</span></div>
+      </div>
+      <div class="idea-clock">
+        <div class="clock" data-min="15">15:00</div>
+        <div class="tbtns"><button class="go">▶ 開始</button><button class="reset">↺ 重設</button></div>
+        <div class="tbar"><i></i></div>
+      </div>
+    </div>
   </div>
 </section>
 
