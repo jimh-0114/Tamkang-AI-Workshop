@@ -134,6 +134,8 @@
   .qlist { display: flex; flex-direction: column; gap: 18px; text-align: left; }
   .ql { display: flex; align-items: center; gap: 18px; padding: 16px 28px; border: 2px solid var(--c); border-radius: 20px; font-size: 30px; background: rgba(15,20,50,.6); }
   .ql .emo { font-size: 42px; } .ql b { color: var(--c); width: 270px; font-size: 32px; white-space: nowrap; }
+  .qlist.jq { flex: 1; } .qlist.jq .ql { font-size: 34px; padding: 20px 30px; }
+  .qlist.five { gap: 12px; } .qlist.five .ql { padding: 12px 26px; }
   .idea-clock .clock { font-size: 200px; } .idea-clock .tbar { width: 560px; }
   .timer-wrap .todo { font-size: 28px; color: var(--sub); margin-top: 12px; line-height: 1.6; }
   .clock { font-size: 260px; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: 6px; margin: 10px 0 6px;
@@ -333,11 +335,55 @@
   </div>
 </section>
 
-<!-- 12 示範② -->
+<!-- 第二次製作｜接 -->
 <section class="slide">
-  <div class="demo-flag">🎬 換你示範</div>
-  <span class="tag c-pink">講師示範②｜套用框架</span>
-  <h2>把企劃卡填進框架，再依需求修改</h2>
+  <span class="tag c-lime">11:05｜第二次製作｜接</span>
+  <h2>接：初始版哪裡做得好？</h2>
+  <div style="display:flex;gap:60px;align-items:center;margin-top:30px">
+    <div class="card c-lime in" style="--d:.1;flex:none;width:400px;text-align:center"><div class="emo" style="font-size:120px">👍</div><div style="font-size:150px;font-weight:900;line-height:1.1">接</div></div>
+    <div class="qlist jq">
+      <div class="ql in" style="--c:var(--lime);--d:0.4"><span class="emo">❓</span><span>哪些功能做對了？</span></div>
+      <div class="ql in" style="--c:var(--lime);--d:0.7"><span class="emo">❓</span><span>哪些畫面你喜歡？</span></div>
+      <div class="ql in" style="--c:var(--lime);--d:1.0"><span class="emo">❓</span><span>有沒有沒想到、但很好用的地方？</span></div>
+    </div>
+  </div>
+  <div class="pill in" style="--d:1.4">接受做得好的部分，留下來</div>
+</section>
+
+<!-- 第二次製作｜去 -->
+<section class="slide">
+  <span class="tag c-pink">11:05｜第二次製作｜去</span>
+  <h2>去：哪裡不合實際情境？</h2>
+  <div style="display:flex;gap:60px;align-items:center;margin-top:30px">
+    <div class="card c-pink in" style="--d:.1;flex:none;width:400px;text-align:center"><div class="emo" style="font-size:120px">✂️</div><div style="font-size:150px;font-weight:900;line-height:1.1">去</div></div>
+    <div class="qlist jq">
+      <div class="ql in" style="--c:var(--pink);--d:0.4"><span class="emo">❓</span><span>有沒有用不到的功能？</span></div>
+      <div class="ql in" style="--c:var(--pink);--d:0.7"><span class="emo">❓</span><span>後排看得到嗎？用起來順嗎？</span></div>
+      <div class="ql in" style="--c:var(--pink);--d:1.0"><span class="emo">❓</span><span>有沒有出錯、亂編的地方？</span></div>
+    </div>
+  </div>
+  <div class="pill in" style="--d:1.4">去掉不合實際情境的部分</div>
+</section>
+
+<!-- 第二次製作｜合 -->
+<section class="slide">
+  <span class="tag c-cyan">11:05｜第二次製作｜合</span>
+  <h2>合：怎麼合在一起？</h2>
+  <div style="display:flex;gap:60px;align-items:center;margin-top:30px">
+    <div class="card c-cyan in" style="--d:.1;flex:none;width:400px;text-align:center"><div class="emo" style="font-size:120px">🔗</div><div style="font-size:150px;font-weight:900;line-height:1.1">合</div></div>
+    <div class="qlist jq">
+      <div class="ql in" style="--c:var(--cyan);--d:0.4"><span class="emo">❓</span><span>留下的＋要改的，寫成規則和畫面需求</span></div>
+      <div class="ql in" style="--c:var(--cyan);--d:0.7"><span class="emo">❓</span><span>套進講師的提示詞框架</span></div>
+      <div class="ql in" style="--c:var(--cyan);--d:1.0"><span class="emo">❓</span><span>再做一次，比比看哪一版好</span></div>
+    </div>
+  </div>
+  <div class="pill in" style="--d:1.4">把兩者合在一起，做出修訂版</div>
+</section>
+
+<!-- 我的框架（抽組選號器，用接去合改過） -->
+<section class="slide">
+  <span class="tag c-pink">11:05｜講師的框架</span>
+  <h2>我的框架：抽組選號器</h2>
   <div style="display:flex;gap:40px">
     <div style="flex:1;font-size:30px;line-height:2.05">
       <div class="in" style="--d:.2"><b style="color:var(--cyan)">【工具名稱】</b>抽組選號器</div>
@@ -347,7 +393,7 @@
       <div class="in" style="--d:.8"><b style="color:var(--cyan)">【特色】</b>可設組數、動畫、一鍵重來</div>
     </div>
     <div class="card c-gold in" style="--d:1.1;flex:none;width:600px;text-align:left;padding:30px 34px">
-      <div style="font-size:34px;font-weight:900">✎ 依需求修改</div>
+      <div style="font-size:34px;font-weight:900">✎ 用接、去、合改過的地方</div>
       <div class="t" style="font-size:27px;line-height:1.9;margin-top:10px">• 不需要 AI 產出 → 改成隨機抽<br>• 規則：抽過的不能重複<br>• 畫面：數字要大，後排看得到<br>• 加一顆「重來」按鈕</div>
     </div>
   </div>
@@ -369,41 +415,40 @@
   <div class="pill in"  style="--d:1.5;color:var(--pink);background:rgba(244,114,182,.14);border-color:rgba(244,114,182,.5)">框架給結構，內容由你決定</div>
 </section>
 
-<!-- 13 第二次製作 -->
-<section class="slide">
-  <span class="tag c-pink">11:05｜第二次製作 20 分鐘</span>
-  <h2>第二次：套用講師的提示詞框架</h2>
-  <div class="in" style="--d:.2">
-    <span class="chip c-cyan">【工具名稱】</span><span class="chip c-cyan">【給誰用】</span><span class="chip c-cyan">【什麼時候用】</span>
-    <span class="chip c-cyan">【要解決的問題】</span><span class="chip c-cyan">【特色】</span><span class="chip c-gold">【規則】</span><span class="chip c-pink">【畫面需求】</span>
-  </div>
-  <div class="small in" style="--d:.5;font-size:26px">企劃卡填進去 ＋ 規則 ＋ 畫面需求</div>
-  <div class="card c-gold in" style="--d:.8;flex:none;margin-top:36px;text-align:left;display:flex;align-items:center;gap:30px">
-    <span class="emo" style="font-size:100px">🧱</span><div style="font-size:38px;font-weight:900;line-height:1.5">框架不是標準答案，可以依需求修改<br>這就是人機協作</div>
-  </div>
-</section>
-
-<!-- 14 接去合 -->
-<section class="slide">
-  <span class="tag c-pink">11:05｜比較兩次產出</span>
-  <h2>接、去、合</h2>
-  <div class="row">
-    <div class="card c-lime in" style="--d:.2"><div style="display:flex;align-items:center;justify-content:center;gap:30px"><span class="emo" style="font-size:110px">👍</span><span style="font-size:150px;font-weight:900">接</span></div><div class="big t">做得好的部分<br>接受</div></div>
-    <div class="card c-pink in" style="--d:.6"><div style="display:flex;align-items:center;justify-content:center;gap:30px"><span class="emo" style="font-size:110px">✂️</span><span style="font-size:150px;font-weight:900">去</span></div><div class="big t">不合實際情境的<br>去掉</div></div>
-    <div class="card c-cyan in" style="--d:1"><div style="display:flex;align-items:center;justify-content:center;gap:30px"><span class="emo" style="font-size:110px">🔗</span><span style="font-size:150px;font-weight:900">合</span></div><div class="big t">把兩者<br>合在一起</div></div>
-  </div>
-  <div class="small in" style="--d:1.4;text-align:center;font-size:28px;margin-top:30px">哪裡不對，就在對話框直接說要改什麼，再測一次</div>
-</section>
-
-<!-- 第二次製作倒數 -->
+<!-- 第二次製作（步驟＋倒數，版型同第一次製作） -->
 <section class="slide">
   <span class="tag c-pink">11:05｜第二次製作</span>
   <div class="timer-wrap">
-    <div class="what">第二次：套用框架，再用「接、去、合」修改</div>
-    <div class="todo">附錄四的框架 → 填企劃卡 → 依需求修改 → 比較兩次產出</div>
-    <div class="clock" data-min="15">15:00</div>
-    <div class="tbtns"><button class="go">▶ 開始</button><button class="reset">↺ 重設</button></div>
-    <div class="tbar"><i></i></div>
+    <div class="what">第二次：套用講師的框架，用「接、去、合」做出修訂版</div>
+    <div class="idea-row">
+      <div class="qlist five">
+        <div class="ql" style="--c:var(--pink)"><span class="emo">📋</span><b>1 複製框架</b><span>按下面的按鈕（附錄四）</span></div>
+        <div class="ql" style="--c:var(--pink)"><span class="emo">✏️</span><b>2 填入企劃卡</b><span>（　）換成你們的內容</span></div>
+        <div class="ql" style="--c:var(--pink)"><span class="emo">👍</span><b>3 接</b><span>留下初始版好的</span></div>
+        <div class="ql" style="--c:var(--pink)"><span class="emo">✂️</span><b>4 去</b><span>拿掉不合用的</span></div>
+        <div class="ql" style="--c:var(--pink)"><span class="emo">🔗</span><b>5 合</b><span>寫進框架，再做一次</span></div>
+        <div style="text-align:center"><button class="copy" data-text="請幫我用 Canvas 做一個可以直接在網頁上操作的小工具，介面使用繁體中文。工具要能依使用者輸入的內容，由 AI 即時產出結果。
+【工具名稱】（填入企劃卡的「產品名稱」）
+【給誰用】（填入企劃卡的「給誰用」）
+【什麼時候用】（填入企劃卡的「什麼時候用」）
+【要解決的問題】（填入企劃卡的「解決什麼問題」）
+【特色】（填入企劃卡的「特色」）
+請依照上面的情境，幫我設計使用者要輸入的欄位，以及工具要產出的內容。
+【規則】
+1. 資料不足時，畫面要提醒使用者補資料，不要自己編內容。
+2. 產出結果下方註明「本內容需由人確認後使用」。
+【畫面需求】
+1. 輸入區與產出結果放在同一個畫面，按一個按鈕就能產出。
+2. 內建一組範例資料，按「填入範例」就能直接測試。
+3. 按鈕與說明文字要清楚，第一次使用的人也看得懂。
+4. 產出結果可以一鍵複製。">📋 複製提示詞框架（空白版）</button></div>
+      </div>
+      <div class="idea-clock">
+        <div class="clock" data-min="15">15:00</div>
+        <div class="tbtns"><button class="go">▶ 開始</button><button class="reset">↺ 重設</button></div>
+        <div class="tbar"><i></i></div>
+      </div>
+    </div>
   </div>
 </section>
 
