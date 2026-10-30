@@ -107,6 +107,7 @@
   .qa .q { width: 520px; display: flex; align-items: center; gap: 22px; padding: 20px 28px; border-radius: 22px; font-size: 40px; font-weight: 900;
     background: color-mix(in srgb, var(--c) 18%, #131a3a); border: 3px solid var(--c); box-shadow: 0 0 26px color-mix(in srgb, var(--c) 40%, transparent); }
   .qa .q .qn { font-size: 26px; color: var(--c); }
+  .qa.narrow .q { width: 460px; font-size: 36px; gap: 18px; } .qa.narrow .a { font-size: 32px; }  /* 第 6 頁右邊有骰子 */
   .qa .q .emo { font-size: 56px; }
   .qa .a { flex: 1; display: flex; align-items: center; padding: 20px 32px; border-radius: 22px; font-size: 36px; font-weight: 700;
     background: rgba(19,26,58,.88); border: 2px dashed var(--c); }
@@ -240,15 +241,18 @@
   <div class="pill reveal">先想清楚任務對不對，再動手</div>
 </section>
 
-<!-- 6 企劃卡四問＋範例（按一下出現一個問題） -->
+<!-- 6 企劃卡四問＋抽組選號器範例（原第 9 頁示範企劃卡併入；按一下出現一個問題） -->
 <section class="slide">
   <span class="tag c-cyan">10:20｜引導</span>
   <h2>產品企劃卡：四個問題 <span style="font-size:32px;color:var(--sub)">範例｜抽組選號器</span></h2>
-  <div class="qa">
+  <div style="display:flex;gap:40px;align-items:center">
+  <div class="qa narrow" style="flex:1">
     <div class="qrow reveal" style="--c:var(--cyan)"><div class="q"><span class="qn">Q1</span><span class="emo">🎯</span>給誰用</div><div class="a">上課的講師</div></div>
     <div class="qrow reveal" style="--c:var(--gold)"><div class="q"><span class="qn">Q2</span><span class="emo">⏰</span>什麼時候用</div><div class="a">各組上台發表前</div></div>
     <div class="qrow reveal" style="--c:var(--pink)"><div class="q"><span class="qn">Q3</span><span class="emo">🧩</span>解決什麼問題</div><div class="a">點名不公平、紙籤慢，還可能抽重複</div></div>
     <div class="qrow reveal" style="--c:var(--lime)"><div class="q"><span class="qn">Q4</span><span class="emo">⭐</span>有什麼特色</div><div class="a">數字跳動、抽過不再抽中、一鍵重來</div></div>
+  </div>
+  <div class="in" style="--d:.3;text-align:center;width:260px"><div class="emo" style="font-size:180px">🎲</div><div style="font-size:30px;font-weight:800;color:var(--gold);margin-top:10px">等一下發表<br>就用它抽組</div></div>
   </div>
 </section>
 
@@ -276,22 +280,6 @@
     <div class="clock" data-min="15">15:00</div>
     <div class="tbtns"><button class="go">▶ 開始</button><button class="reset">↺ 重設</button></div>
     <div class="tbar"><i></i></div>
-  </div>
-</section>
-
-<!-- 9 示範企劃卡 -->
-<section class="slide">
-  <div class="demo-flag">🎬 換你示範</div>
-  <span class="tag c-gold">講師示範｜先拆企劃卡</span>
-  <h2>示範：抽組選號器</h2>
-  <div style="display:flex;gap:40px;align-items:center">
-    <div class="lines" style="flex:1">
-      <div class="ln in" style="--c:var(--cyan);--d:.2"><span class="emo">🎯</span><span class="k">給誰用</span>上課的講師</div>
-      <div class="ln in" style="--c:var(--gold);--d:.4"><span class="emo">⏰</span><span class="k">什麼時候用</span>各組上台發表前</div>
-      <div class="ln in" style="--c:var(--pink);--d:.6"><span class="emo">🧩</span><span class="k">解決什麼問題</span>10 組抽 3 組，公平、不重複</div>
-      <div class="ln in" style="--c:var(--lime);--d:.8"><span class="emo">⭐</span><span class="k">有什麼特色</span>可設組數、數字跳動、抽過不再抽</div>
-    </div>
-    <div class="in" style="--d:1;text-align:center;width:300px"><div class="emo" style="font-size:200px">🎲</div><div style="font-size:30px;font-weight:800;color:var(--gold);margin-top:10px">等一下發表<br>就用它抽組</div></div>
   </div>
 </section>
 
