@@ -107,7 +107,9 @@
   .qa .q { width: 520px; display: flex; align-items: center; gap: 22px; padding: 20px 28px; border-radius: 22px; font-size: 40px; font-weight: 900;
     background: color-mix(in srgb, var(--c) 18%, #131a3a); border: 3px solid var(--c); box-shadow: 0 0 26px color-mix(in srgb, var(--c) 40%, transparent); }
   .qa .q .qn { font-size: 26px; color: var(--c); }
-  .qa.narrow .q { width: 460px; font-size: 36px; gap: 18px; } .qa.narrow .a { font-size: 32px; }  /* 第 6 頁右邊有骰子 */
+  .qa.two .a { font-size: 32px; }  /* 企劃卡頁：說明要再按一下才出現 */
+  .qa.two .qrow .a.reveal { opacity: 0; transform: translateX(40px); transition: opacity .5s, transform .5s; }
+  .qa.two .qrow .a.reveal.on { opacity: 1; transform: none; }
   .qa .q .emo { font-size: 56px; }
   .qa .a { flex: 1; display: flex; align-items: center; padding: 20px 32px; border-radius: 22px; font-size: 36px; font-weight: 700;
     background: rgba(19,26,58,.88); border: 2px dashed var(--c); }
@@ -127,6 +129,12 @@
   /* 倒數計時 */
   .timer-wrap { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
   .timer-wrap .what { font-size: 44px; font-weight: 900; }
+  /* 發想討論倒數：左邊企劃卡四問、右邊時鐘 */
+  .idea-row { display: flex; gap: 70px; align-items: center; margin-top: 36px; }
+  .qlist { display: flex; flex-direction: column; gap: 18px; text-align: left; }
+  .ql { display: flex; align-items: center; gap: 18px; padding: 16px 28px; border: 2px solid var(--c); border-radius: 20px; font-size: 30px; background: rgba(15,20,50,.6); }
+  .ql .emo { font-size: 42px; } .ql b { color: var(--c); width: 210px; font-size: 32px; }
+  .idea-clock .clock { font-size: 200px; } .idea-clock .tbar { width: 560px; }
   .timer-wrap .todo { font-size: 28px; color: var(--sub); margin-top: 12px; line-height: 1.6; }
   .clock { font-size: 260px; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: 6px; margin: 10px 0 6px;
     color: var(--cyan); text-shadow: 0 0 40px rgba(34,211,238,.55); }
@@ -256,18 +264,15 @@
   <div class="pill in" style="--d:1.1;color:var(--cyan);background:rgba(34,211,238,.14);border-color:rgba(34,211,238,.5)"><span class="emo">🎯</span>　題目要小，今天做得出來</div>
 </section>
 
-<!-- 6 企劃卡四問＋抽組選號器範例（原第 9 頁示範企劃卡併入；按一下出現一個問題） -->
+<!-- 7 企劃卡四問：每個問題按兩下（先出問題，再出說明） -->
 <section class="slide">
   <span class="tag c-cyan">10:30｜發想</span>
-  <h2>產品企劃卡：四個問題 <span style="font-size:32px;color:var(--sub)">範例｜抽組選號器</span></h2>
-  <div style="display:flex;gap:40px;align-items:center">
-  <div class="qa narrow" style="flex:1">
-    <div class="qrow reveal" style="--c:var(--cyan)"><div class="q"><span class="qn">Q1</span><span class="emo">🎯</span>給誰用</div><div class="a">上課的講師</div></div>
-    <div class="qrow reveal" style="--c:var(--gold)"><div class="q"><span class="qn">Q2</span><span class="emo">⏰</span>什麼時候用</div><div class="a">各組上台發表前</div></div>
-    <div class="qrow reveal" style="--c:var(--pink)"><div class="q"><span class="qn">Q3</span><span class="emo">🧩</span>解決什麼問題</div><div class="a">點名不公平、紙籤慢，還可能抽重複</div></div>
-    <div class="qrow reveal" style="--c:var(--lime)"><div class="q"><span class="qn">Q4</span><span class="emo">⭐</span>有什麼特色</div><div class="a">數字跳動、抽過不再抽中、一鍵重來</div></div>
-  </div>
-  <div class="in" style="--d:.3;text-align:center;width:260px"><div class="emo" style="font-size:180px">🎲</div><div style="font-size:30px;font-weight:800;color:var(--gold);margin-top:10px">等一下發表<br>就用它抽組</div></div>
+  <h2>產品企劃卡：四個問題</h2>
+  <div class="qa two">
+    <div class="qrow reveal" style="--c:var(--cyan)"><div class="q"><span class="qn">Q1</span><span class="emo">🎯</span>給誰用</div><div class="a reveal">誰會打開這個工具？老師、學員，還是課程助教？</div></div>
+    <div class="qrow reveal" style="--c:var(--gold)"><div class="q"><span class="qn">Q2</span><span class="emo">⏰</span>什麼時候用</div><div class="a reveal">什麼時候會用到？備課時、上完課，還是期末？</div></div>
+    <div class="qrow reveal" style="--c:var(--pink)"><div class="q"><span class="qn">Q3</span><span class="emo">🧩</span>解決什麼問題</div><div class="a reveal">現在哪裡花時間、容易出錯？用了之後能改善什麼？</div></div>
+    <div class="qrow reveal" style="--c:var(--lime)"><div class="q"><span class="qn">Q4</span><span class="emo">⭐</span>有什麼特色</div><div class="a reveal">有什麼是別人沒有、我們有的？</div></div>
   </div>
 </section>
 
@@ -276,10 +281,19 @@
   <span class="tag c-cyan">10:30｜發想討論</span>
   <div class="timer-wrap">
     <div class="what">各組討論：找一個問題，填好企劃卡四格</div>
-    <div class="todo">給誰用？什麼時候用？解決什麼問題？有什麼特色？</div>
-    <div class="clock" data-min="15">15:00</div>
-    <div class="tbtns"><button class="go">▶ 開始</button><button class="reset">↺ 重設</button></div>
-    <div class="tbar"><i></i></div>
+    <div class="idea-row">
+      <div class="qlist">
+        <div class="ql" style="--c:var(--cyan)"><span class="emo">🎯</span><b>給誰用</b><span>誰會打開這個工具？</span></div>
+        <div class="ql" style="--c:var(--gold)"><span class="emo">⏰</span><b>什麼時候用</b><span>什麼情況、哪個時間點？</span></div>
+        <div class="ql" style="--c:var(--pink)"><span class="emo">🧩</span><b>解決什麼問題</b><span>哪裡花時間、容易出錯？</span></div>
+        <div class="ql" style="--c:var(--lime)"><span class="emo">⭐</span><b>有什麼特色</b><span>別人沒有、我們有的？</span></div>
+      </div>
+      <div class="idea-clock">
+        <div class="clock" data-min="15">15:00</div>
+        <div class="tbtns"><button class="go">▶ 開始</button><button class="reset">↺ 重設</button></div>
+        <div class="tbar"><i></i></div>
+      </div>
+    </div>
   </div>
 </section>
 
