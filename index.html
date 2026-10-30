@@ -135,7 +135,8 @@
   .ql { display: flex; align-items: center; gap: 18px; padding: 16px 28px; border: 2px solid var(--c); border-radius: 20px; font-size: 30px; background: rgba(15,20,50,.6); }
   .ql .emo { font-size: 42px; } .ql b { color: var(--c); width: 270px; font-size: 32px; white-space: nowrap; }
   .qlist.jq { flex: 1; } .qlist.jq .ql { font-size: 34px; padding: 20px 30px; }
-  .qlist.five { gap: 12px; } .qlist.five .ql { padding: 12px 26px; }
+  .fwbox { text-align: left; background: rgba(15,20,50,.6); border: 2px solid var(--pink); border-radius: 22px; padding: 22px 34px; font-size: 28px; line-height: 1.75; }
+  .fwbox .fwt { font-size: 30px; font-weight: 900; color: var(--pink); margin-bottom: 6px; }
   .idea-clock .clock { font-size: 200px; } .idea-clock .tbar { width: 560px; }
   .timer-wrap .todo { font-size: 28px; color: var(--sub); margin-top: 12px; line-height: 1.6; }
   .clock { font-size: 260px; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: 6px; margin: 10px 0 6px;
@@ -427,18 +428,21 @@
   <div class="pill in"  style="--d:1.5;color:var(--pink);background:rgba(244,114,182,.14);border-color:rgba(244,114,182,.5)">框架給結構，內容由你決定</div>
 </section>
 
-<!-- 第二次製作（步驟＋倒數，版型同第一次製作） -->
+<!-- 第二次製作（左邊講師框架＋複製鈕，右邊倒數） -->
 <section class="slide">
   <span class="tag c-pink">11:05｜第二次製作</span>
   <div class="timer-wrap">
-    <div class="what">第二次：套用講師的框架，用「接、去、合」做出修訂版</div>
+    <div class="what">第二次：複製講師的框架，填入企劃卡，做出修訂版</div>
     <div class="idea-row">
-      <div class="qlist five">
-        <div class="ql" style="--c:var(--pink)"><span class="emo">📋</span><b>1 複製框架</b><span>按下面的按鈕（附錄四）</span></div>
-        <div class="ql" style="--c:var(--pink)"><span class="emo">✏️</span><b>2 填入企劃卡</b><span>（　）換成你們的內容</span></div>
-        <div class="ql" style="--c:var(--pink)"><span class="emo">👍</span><b>3 接</b><span>留下初始版好的</span></div>
-        <div class="ql" style="--c:var(--pink)"><span class="emo">✂️</span><b>4 去</b><span>拿掉不合用的</span></div>
-        <div class="ql" style="--c:var(--pink)"><span class="emo">🔗</span><b>5 合</b><span>寫進框架，再做一次</span></div>
+      <div class="fwbox">
+        <div class="fwt">講師的提示詞框架（附錄四）</div>
+        <div class="fwl"><b style="color:var(--cyan)">【工具名稱】</b>（產品名稱）</div>
+        <div class="fwl"><b style="color:var(--cyan)">【給誰用】</b>（　）</div>
+        <div class="fwl"><b style="color:var(--cyan)">【什麼時候用】</b>（　）</div>
+        <div class="fwl"><b style="color:var(--cyan)">【要解決的問題】</b>（　）</div>
+        <div class="fwl"><b style="color:var(--cyan)">【特色】</b>（　）</div>
+        <div class="fwl"><b style="color:var(--gold)">【規則】</b>資料不足要提醒，不要自己編</div>
+        <div class="fwl"><b style="color:var(--pink)">【畫面需求】</b>一個畫面、填入範例、一鍵複製</div>
         <div style="text-align:center"><button class="copy" data-text="請幫我用 Canvas 做一個可以直接在網頁上操作的小工具，介面使用繁體中文。工具要能依使用者輸入的內容，由 AI 即時產出結果。
 【工具名稱】（填入企劃卡的「產品名稱」）
 【給誰用】（填入企劃卡的「給誰用」）
