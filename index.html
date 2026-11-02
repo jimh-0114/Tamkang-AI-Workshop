@@ -603,9 +603,10 @@
   let wheelLock = 0;
   addEventListener("wheel", (e) => {
     e.preventDefault();
-    if (Math.abs(e.deltaY) < 8 || Date.now() < wheelLock) return;
+    const d = e.deltaMode ? e.deltaY * 40 : e.deltaY;  // 有些滑鼠／瀏覽器以「行」回報，換算成像素
+    if (Math.abs(d) < 4 || Date.now() < wheelLock) return;
     wheelLock = Date.now() + 700;
-    e.deltaY > 0 ? next() : prev();
+    d > 0 ? next() : prev();
   }, { passive: false });
 
   // ── 草船借箭動畫 ──
