@@ -35,13 +35,8 @@
   .btn { font: inherit; font-size: 18px; font-weight: 900; padding: 12px 30px; border-radius: 999px; cursor: pointer; border: none;
     background: linear-gradient(90deg, var(--lime), var(--cyan)); color: #070b1f; }
   .btn:disabled { opacity: .5; cursor: default; }
-  .btn.ghost { background: rgba(251,191,36,.15); color: var(--gold); border: 2px solid var(--gold); }
-  .btn.done { background: var(--lime); color: #070b1f; border-color: var(--lime); }
   .msg { font-size: 15px; color: var(--sub); }
   .msg.err { color: var(--red); }
-  .prompt { margin-top: 10px; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 15px; line-height: 1.7; padding: 14px 16px; border-radius: 14px;
-    background: rgba(15,20,50,.7); border: 2px solid var(--pink); }
-  .prompt .blank { color: var(--dim); }
   .locked { opacity: .45; pointer-events: none; }
 </style>
 </head>
@@ -85,13 +80,6 @@
       <button class="btn" id="save">💾 儲存</button>
       <span class="msg" id="msg"></span>
     </div>
-
-    <div class="sec">
-      <div class="lab"><span class="emo">📋</span>第二次製作用：套好企劃卡的提示詞框架</div>
-      <div class="hint">四格填好後，這裡會自動帶入。第二次製作時按「複製」，貼到 Gemini（先點 Canvas）。</div>
-      <div class="prompt" id="prompt"></div>
-      <div class="bar"><button class="btn ghost" id="copy">📋 複製提示詞</button></div>
-    </div>
   </div>
 </div>
 
@@ -105,31 +93,10 @@ let group = 0;
 
 function draftKey(g) { return 'tamkang-card-' + g; }
 function readForm() { const d = { group }; FIELDS.forEach(k => d[k] = $(k).value.trim()); return d; }
-function fillForm(d) { FIELDS.forEach(k => $(k).value = (d && d[k]) || ''); renderPrompt(); }
+function fillForm(d) { FIELDS.forEach(k => $(k).value = (d && d[k]) || ''); }
 function saveDraft() { try { localStorage.setItem(draftKey(group), JSON.stringify(readForm())); } catch (e) {} }
 function loadDraft(g) { try { return JSON.parse(localStorage.getItem(draftKey(g)) || 'null'); } catch (e) { return null; } }
 function setMsg(t, err) { $('msg').textContent = t; $('msg').className = 'msg' + (err ? ' err' : ''); }
-
-function buildPrompt(d, html) {
-  const v = (k, label) => d[k] ? (html ? esc(d[k]) : d[k]) : (html ? `<span class="blank">（填入企劃卡的「${label}」）</span>` : `（填入企劃卡的「${label}」）`);
-  return `請幫我用 Canvas 做一個可以直接在網頁上操作的小工具，介面使用繁體中文。工具要能依使用者輸入的內容，由 AI 即時產出結果。
-【工具名稱】${v('name', '產品名稱')}
-【給誰用】${v('who', '給誰用')}
-【什麼時候用】${v('when', '什麼時候用')}
-【要解決的問題】${v('problem', '解決什麼問題')}
-【特色】${v('feature', '特色')}
-請依照上面的情境，幫我設計使用者要輸入的欄位，以及工具要產出的內容。
-【規則】
-1. 資料不足時，畫面要提醒使用者補資料，不要自己編內容。
-2. 產出結果下方註明「本內容需由人確認後使用」。
-【畫面需求】
-1. 輸入區與產出結果放在同一個畫面，按一個按鈕就能產出。
-2. 內建一組範例資料，按「填入範例」就能直接測試。
-3. 按鈕與說明文字要清楚，第一次使用的人也看得懂。
-4. 產出結果可以一鍵複製。`;
-}
-function esc(s) { return s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
-function renderPrompt() { $('prompt').innerHTML = buildPrompt(readForm(), true); }
 
 async function pickGroup(g) {
   group = g;
@@ -159,22 +126,11 @@ async function save() {
   $('save').disabled = false;
 }
 
-function copyPrompt() {
-  const t = buildPrompt(readForm(), false);
-  const ok = () => { $('copy').textContent = '✅ 已複製'; $('copy').classList.add('done');
-    setTimeout(() => { $('copy').textContent = '📋 複製提示詞'; $('copy').classList.remove('done'); }, 1800); };
-  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(ok, () => fallback(t, ok));
-  else fallback(t, ok);
-}
-function fallback(t, ok) { const a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); document.execCommand('copy'); a.remove(); ok(); }
-
 for (let g = 1; g <= 10; g++) {
   const b = document.createElement('button'); b.textContent = g; b.dataset.g = g; b.onclick = () => pickGroup(g); $('groups').appendChild(b);
 }
-FIELDS.forEach(k => $(k).addEventListener('input', () => { renderPrompt(); saveDraft(); }));
+FIELDS.forEach(k => $(k).addEventListener('input', saveDraft));
 $('save').onclick = save;
-$('copy').onclick = copyPrompt;
-renderPrompt();
 try { const g = +localStorage.getItem('tamkang-card-group'); if (g) pickGroup(g); } catch (e) {}
 </script>
 </body>
