@@ -6,98 +6,137 @@
 <title>產品企劃卡</title>
 <style>
   :root {
-    --bg1: #070b1f; --bg2: #1b1446; --card: rgba(19,26,58,.88); --txt: #f8fafc; --sub: #c7d2fe; --dim: #8b93c9;
-    --cyan: #22d3ee; --pink: #f472b6; --gold: #fbbf24; --lime: #a3e635; --violet: #a78bfa; --red: #f87171;
+    --bg1: #070b1f; --bg2: #1b1446;
+    --paper: #fffdf8; --ink: #1c2140; --ink2: #5b6280; --line: #d9dce8; --soft: #f3f4f9;
+    --cyan: #0891b2; --gold: #d97706; --pink: #db2777; --lime: #65a30d; --violet: #7c3aed; --red: #dc2626;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { min-height: 100vh; font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif; color: var(--txt);
-    background: radial-gradient(circle at 90% 0%, rgba(34,211,238,.16), transparent 40%),
-                radial-gradient(circle at 0% 100%, rgba(244,114,182,.14), transparent 40%),
-                linear-gradient(135deg, var(--bg1), var(--bg2)) fixed; }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 22px 16px 60px; }
+  body { min-height: 100vh; font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif; color: var(--ink);
+    background: radial-gradient(circle at 90% 0%, rgba(34,211,238,.18), transparent 40%),
+                radial-gradient(circle at 0% 100%, rgba(244,114,182,.16), transparent 40%),
+                linear-gradient(135deg, var(--bg1), var(--bg2)) fixed;
+    padding: 28px 16px 60px; }
   .emo { font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif; }
-  h1 { font-size: 28px; display: flex; align-items: center; gap: 10px; }
-  .lead { color: var(--sub); margin-top: 6px; font-size: 15px; }
-  .sec { margin-top: 22px; }
-  .lab { font-size: 18px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-  .groups { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 22px; }
+  /* 白色紙卡 */
+  .paper { max-width: 760px; margin: 0 auto; background: var(--paper); border-radius: 18px; overflow: hidden;
+    box-shadow: 0 18px 50px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.06); }
+  .paper::before { content: ""; display: block; height: 8px; background: linear-gradient(90deg, #22d3ee, #a78bfa, #f472b6); }
+  .head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 22px 26px 16px; border-bottom: 2px solid var(--ink); }
+  .head h1 { font-size: 26px; letter-spacing: 2px; display: flex; align-items: center; gap: 10px; }
+  .gtag { font-size: 17px; font-weight: 900; padding: 5px 16px; border-radius: 8px; border: 2px solid var(--ink); white-space: nowrap; }
+  .body { padding: 20px 26px 24px; }
+  .lead { font-size: 18px; font-weight: 800; }
+  /* 選組 */
+  .groups { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 14px; }
   @media (min-width: 560px) { .groups { grid-template-columns: repeat(5, 1fr); } }
-  .groups button { font: inherit; font-size: 22px; font-weight: 900; padding: 20px 0; border-radius: 16px; cursor: pointer;
-    border: 2px solid #3b4380; background: var(--card); color: var(--txt); transition: transform .15s, border-color .15s; }
-  .groups button:hover { border-color: var(--cyan); transform: translateY(-2px); }
-  .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-  .gtag { font-size: 18px; font-weight: 900; padding: 6px 18px; border-radius: 999px; color: #070b1f;
-    background: linear-gradient(90deg, var(--cyan), var(--pink)); white-space: nowrap; }
-  .back { font: inherit; font-size: 15px; color: var(--sub); background: none; border: 1px solid #3b4380; border-radius: 999px;
-    padding: 6px 14px; cursor: pointer; }
-  .field { margin-top: 16px; padding: 14px 16px; border-radius: 16px; background: var(--card); border: 2px solid var(--c, #3b4380); }
-  .field .lab { color: var(--c, var(--txt)); }
-  .hint { font-size: 14px; color: var(--dim); margin: -2px 0 8px; line-height: 1.5; }
-  input, textarea { width: 100%; font: inherit; font-size: 17px; color: var(--txt); background: rgba(7,11,31,.7);
-    border: 1px solid #3b4380; border-radius: 10px; padding: 10px 12px; line-height: 1.6; }
-  textarea { min-height: 84px; resize: vertical; }
-  input:focus, textarea:focus { outline: 2px solid var(--c, var(--cyan)); border-color: transparent; }
-  .bar { display: flex; align-items: center; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
-  .btn { font: inherit; font-size: 18px; font-weight: 900; padding: 12px 30px; border-radius: 999px; cursor: pointer; border: none;
-    background: linear-gradient(90deg, var(--lime), var(--cyan)); color: #070b1f; }
+  .groups button { font: inherit; font-size: 20px; font-weight: 900; padding: 18px 0; border-radius: 12px; cursor: pointer;
+    border: 2px solid var(--line); background: #fff; color: var(--ink); transition: border-color .15s, transform .15s, box-shadow .15s; }
+  .groups button:hover { border-color: var(--ink); transform: translateY(-2px); box-shadow: 0 6px 14px rgba(28,33,64,.12); }
+  /* 產品名稱 */
+  .namerow { display: flex; align-items: baseline; gap: 12px; padding: 4px 0 18px; }
+  .namerow label { font-size: 18px; font-weight: 900; white-space: nowrap; }
+  .namerow input { flex: 1; min-width: 0; font: inherit; font-size: 20px; font-weight: 700; color: var(--ink); background: transparent;
+    border: none; border-bottom: 2px dashed var(--ink2); padding: 4px 2px; }
+  .namerow input:focus { outline: none; border-bottom: 2px solid var(--violet); }
+  /* 四格表格 */
+  .grid { border: 2px solid var(--ink); border-radius: 10px; overflow: hidden; }
+  .row { display: grid; grid-template-columns: 190px 1fr; }
+  .row + .row { border-top: 1px solid var(--line); }
+  .k { padding: 14px 14px 14px 16px; background: var(--soft); border-right: 1px solid var(--line); border-left: 6px solid var(--c); }
+  .k b { display: flex; align-items: center; gap: 6px; font-size: 18px; color: var(--c); }
+  .k small { display: block; font-size: 13px; color: var(--ink2); margin-top: 6px; line-height: 1.5; }
+  .row textarea { width: 100%; min-height: 96px; font: inherit; font-size: 17px; line-height: 1.7; color: var(--ink); background: #fff;
+    border: none; padding: 14px 16px; resize: vertical; }
+  .row textarea:focus { outline: none; background: #fbfaff; box-shadow: inset 0 0 0 2px var(--c); }
+  @media (max-width: 560px) {
+    .row { grid-template-columns: 1fr; }
+    .k { border-right: none; border-bottom: 1px solid var(--line); }
+  }
+  /* 按鈕與訊息 */
+  .bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+  .btn { font: inherit; font-size: 17px; font-weight: 900; padding: 11px 28px; border-radius: 10px; cursor: pointer; border: 2px solid var(--ink);
+    background: var(--ink); color: #fff; }
   .btn:disabled { opacity: .5; cursor: default; }
-  .msg { font-size: 15px; color: var(--sub); }
+  .btn.ghost { background: #fff; color: var(--ink); }
+  .btn.done { background: var(--lime); border-color: var(--lime); color: #fff; }
+  .back { font: inherit; font-size: 14px; color: var(--ink2); background: none; border: 1px solid var(--line); border-radius: 8px; padding: 5px 12px; cursor: pointer; }
+  .back:hover { border-color: var(--ink2); }
+  .msg { font-size: 14px; color: var(--ink2); }
   .msg.err { color: var(--red); }
-  .btn.ghost { background: rgba(251,191,36,.15); color: var(--gold); border: 2px solid var(--gold); }
-  .btn.done { background: var(--lime); color: #070b1f; border-color: var(--lime); }
-  .result { margin-top: 22px; padding: 16px 18px; border-radius: 16px; background: rgba(15,20,50,.75); border: 2px solid var(--lime);
-    box-shadow: 0 0 20px rgba(163,230,53,.25); }
-  .result pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; font-size: 16px; line-height: 1.75; margin-top: 8px; }
+  .top { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  /* 完成頁 */
+  .dv { font-size: 20px; font-weight: 800; border-bottom: 2px solid var(--ink); padding: 2px 4px; }
+  .v { padding: 14px 16px; font-size: 17px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; background: #fff; }
+  .v:empty::before { content: "（沒填）"; color: var(--ink2); }
+  .done-row .k { display: flex; align-items: center; }
+  .groups button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 78px; padding: 10px 0; }
+  .groups button .st { font-size: 12px; font-weight: 700; color: var(--lime); }
+  .groups button .st:empty { display: none; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div id="step1">
-    <h1><span class="emo">🃏</span>產品企劃卡</h1>
+<div class="paper" id="step1">
+  <div class="head"><h1><span class="emo">🃏</span>產品企劃卡</h1></div>
+  <div class="body">
     <p class="lead">你們是第幾組？</p>
     <div class="groups" id="groups"></div>
   </div>
+</div>
 
-  <div id="form" hidden>
-    <div class="top">
-      <h1><span class="emo">🃏</span>產品企劃卡</h1>
-      <span class="gtag" id="gtag"></span>
-    </div>
-    <div class="bar" style="margin-top:8px"><button class="back" id="back">← 換組</button><span class="msg" id="lmsg"></span></div>
-    <div class="field" style="--c:var(--violet)">
-      <div class="lab"><span class="emo">🏷️</span>產品名稱</div>
+<div class="paper" id="form" hidden>
+  <div class="head">
+    <h1><span class="emo">🃏</span>產品企劃卡</h1>
+    <span class="gtag" id="gtag"></span>
+  </div>
+  <div class="body">
+    <div class="top"><button class="back" id="back">← 換組</button><span class="msg" id="lmsg"></span></div>
+    <div class="namerow">
+      <label for="name">產品名稱：</label>
       <input id="name" maxlength="60" placeholder="例如：抽組選號器">
     </div>
-    <div class="field" style="--c:var(--cyan)">
-      <div class="lab"><span class="emo">🎯</span>給誰用</div>
-      <div class="hint">誰會打開這個工具？（老師、學員、課程助教……）</div>
-      <textarea id="who"></textarea>
-    </div>
-    <div class="field" style="--c:var(--gold)">
-      <div class="lab"><span class="emo">⏰</span>什麼時候用</div>
-      <div class="hint">在什麼情況、哪個時間點會用到？（備課時、上完課、期末……）</div>
-      <textarea id="when"></textarea>
-    </div>
-    <div class="field" style="--c:var(--pink)">
-      <div class="lab"><span class="emo">🧩</span>解決什麼問題</div>
-      <div class="hint">使用者現在怎麼做？哪裡花時間、容易出錯？用了這個工具後，可以改善什麼？</div>
-      <textarea id="problem"></textarea>
-    </div>
-    <div class="field" style="--c:var(--lime)">
-      <div class="lab"><span class="emo">⭐</span>有什麼特色</div>
-      <div class="hint">有什麼是別人沒有、我們有的？</div>
-      <textarea id="feature"></textarea>
+    <div class="grid">
+      <div class="row" style="--c:var(--cyan)">
+        <div class="k"><b><span class="emo">🎯</span>給誰用</b><small>誰會打開這個工具？（老師、學員、課程助教……）</small></div>
+        <textarea id="who"></textarea>
+      </div>
+      <div class="row" style="--c:var(--gold)">
+        <div class="k"><b><span class="emo">⏰</span>什麼時候用</b><small>在什麼情況、哪個時間點會用到？（備課時、上完課、期末……）</small></div>
+        <textarea id="when"></textarea>
+      </div>
+      <div class="row" style="--c:var(--pink)">
+        <div class="k"><b><span class="emo">🧩</span>解決什麼問題</b><small>使用者現在怎麼做？哪裡花時間、容易出錯？用了之後可以改善什麼？</small></div>
+        <textarea id="problem"></textarea>
+      </div>
+      <div class="row" style="--c:var(--lime)">
+        <div class="k"><b><span class="emo">⭐</span>特色</b><small>有什麼是別人沒有、我們有的？</small></div>
+        <textarea id="feature"></textarea>
+      </div>
     </div>
 
     <div class="bar">
       <button class="btn" id="save">💾 儲存</button>
       <span class="msg" id="msg"></span>
     </div>
+  </div>
+</div>
 
-    <div class="result" id="result" hidden>
-      <div class="lab"><span class="emo">✅</span>我們的產品企劃卡</div>
-      <pre id="full"></pre>
-      <div class="bar"><button class="btn ghost" id="copy">📋 複製企劃卡</button></div>
+<div class="paper" id="done" hidden>
+  <div class="head">
+    <h1><span class="emo">✅</span>企劃卡完成</h1>
+    <span class="gtag" id="dtag"></span>
+  </div>
+  <div class="body">
+    <div class="namerow"><label>產品名稱：</label><span class="dv" id="d_name"></span></div>
+    <div class="grid">
+      <div class="row" style="--c:var(--cyan)"><div class="k"><b><span class="emo">🎯</span>給誰用</b></div><div class="v" id="d_who"></div></div>
+      <div class="row" style="--c:var(--gold)"><div class="k"><b><span class="emo">⏰</span>什麼時候用</b></div><div class="v" id="d_when"></div></div>
+      <div class="row" style="--c:var(--pink)"><div class="k"><b><span class="emo">🧩</span>解決什麼問題</b></div><div class="v" id="d_problem"></div></div>
+      <div class="row" style="--c:var(--lime)"><div class="k"><b><span class="emo">⭐</span>特色</b></div><div class="v" id="d_feature"></div></div>
+    </div>
+    <div class="bar">
+      <button class="btn" id="copy">📋 複製企劃卡</button>
+      <button class="btn ghost" id="edit">✏️ 修改</button>
+      <span class="msg" id="dmsg"></span>
     </div>
   </div>
 </div>
@@ -112,7 +151,7 @@ let group = 0;
 
 function draftKey(g) { return 'tamkang-card-' + g; }
 function readForm() { const d = { group }; FIELDS.forEach(k => d[k] = $(k).value.trim()); return d; }
-function fillForm(d) { FIELDS.forEach(k => $(k).value = (d && d[k]) || ''); $('result').hidden = true; }
+function fillForm(d) { FIELDS.forEach(k => $(k).value = (d && d[k]) || ''); }
 function saveDraft() { try { localStorage.setItem(draftKey(group), JSON.stringify(readForm())); } catch (e) {} }
 function loadDraft(g) { try { return JSON.parse(localStorage.getItem(draftKey(g)) || 'null'); } catch (e) { return null; } }
 function cardText(d) {
@@ -122,9 +161,17 @@ function cardText(d) {
 解決什麼問題：${d.problem}
 特色：${d.feature}`;
 }
-function showResult(d) { $('full').textContent = cardText(d); $('result').hidden = false; }
+function view(id) { ['step1', 'form', 'done'].forEach(v => $(v).hidden = v !== id); window.scrollTo(0, 0); }
+let doneCard = null;
+function showResult(d) {
+  doneCard = d;
+  $('dtag').textContent = '第 ' + group + ' 組';
+  FIELDS.forEach(k => $('d_' + k).textContent = d[k] || '');
+  $('dmsg').textContent = d.updated ? '已存到雲端（' + d.updated + '）' : '';
+  view('done');
+}
 function copyCard() {
-  const t = $('full').textContent;
+  const t = cardText(doneCard);
   const ok = () => { $('copy').textContent = '✅ 已複製'; $('copy').classList.add('done');
     setTimeout(() => { $('copy').textContent = '📋 複製企劃卡'; $('copy').classList.remove('done'); }, 1800); };
   if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(ok, () => fallback(t, ok));
@@ -136,17 +183,18 @@ function setMsg(t, err) { $('msg').textContent = t; $('msg').className = 'msg' +
 
 async function pickGroup(g) {
   group = g;
-  $('step1').hidden = true; $('form').hidden = false; $('gtag').textContent = '第 ' + g + ' 組';
-  setMsg(''); loadMsg(''); window.scrollTo(0, 0);
+  view('form'); $('gtag').textContent = '第 ' + g + ' 組';
+  setMsg(''); loadMsg('');
   fillForm(loadDraft(g));
   if (!API_URL) { loadMsg('（尚未連上雲端，內容只存在這台裝置）'); return; }
-  loadMsg('讀取第 ' + g + ' 組…');
+  loadMsg('讀取第 ' + g + ' 組…'); $('save').disabled = true;
   try {
     const r = await (await fetch(API_URL + '?action=get&group=' + g)).json();
     if (group !== g) return;
     if (r.ok && r.card) { fillForm(r.card); saveDraft(); loadMsg('已載入第 ' + g + ' 組（' + r.card.updated + ' 存的）'); }
     else loadMsg('第 ' + g + ' 組還沒存過');
   } catch (e) { loadMsg('讀取失敗，先用這台裝置的草稿', true); }
+  if (group === g) $('save').disabled = false;
 }
 
 async function save() {
@@ -162,12 +210,23 @@ async function save() {
 }
 
 for (let g = 1; g <= 10; g++) {
-  const b = document.createElement('button'); b.textContent = '第 ' + g + ' 組'; b.dataset.g = g; b.onclick = () => pickGroup(g); $('groups').appendChild(b);
+  const b = document.createElement('button'); b.innerHTML = '第 ' + g + ' 組<span class="st"></span>'; b.dataset.g = g; b.onclick = () => pickGroup(g); $('groups').appendChild(b);
 }
+// 選組頁標出已經存過的組，避免選錯組蓋掉別組
+async function loadGroups() {
+  if (!API_URL) return;
+  try {
+    const r = await (await fetch(API_URL + '?action=list')).json();
+    const has = new Set((r.cards || []).map(c => c.group));
+    document.querySelectorAll('#groups button').forEach(b => b.querySelector('.st').textContent = has.has(+b.dataset.g) ? '✓ 已填' : '');
+  } catch (e) {}
+}
+loadGroups();
 FIELDS.forEach(k => $(k).addEventListener('input', saveDraft));
 $('save').onclick = save;
 $('copy').onclick = copyCard;
-$('back').onclick = () => { group = 0; $('form').hidden = true; $('step1').hidden = false; window.scrollTo(0, 0); };
+$('back').onclick = () => { group = 0; view('step1'); loadGroups(); };
+$('edit').onclick = () => { view('form'); setMsg(''); };
 </script>
 </body>
 </html>
