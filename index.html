@@ -599,6 +599,14 @@
     if (e.key === "f" || e.key === "F") document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
   });
   // 10-30 Jim：只用鍵盤換頁，滑鼠點畫面不換頁（避免不小心換頁）
+  // 11-02 Jim：滑鼠滾輪也能換頁（往下＝下一步，往上＝上一步）；一次滾動只換一步，觸控板連續觸發也不會連跳
+  let wheelLock = 0;
+  addEventListener("wheel", (e) => {
+    e.preventDefault();
+    if (Math.abs(e.deltaY) < 8 || Date.now() < wheelLock) return;
+    wheelLock = Date.now() + 700;
+    e.deltaY > 0 ? next() : prev();
+  }, { passive: false });
 
   // ── 草船借箭動畫 ──
   const story = (() => {
