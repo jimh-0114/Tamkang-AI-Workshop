@@ -20,10 +20,16 @@
   .lead { color: var(--sub); margin-top: 6px; font-size: 15px; }
   .sec { margin-top: 22px; }
   .lab { font-size: 18px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-  .groups { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-  .groups button { font: inherit; font-size: 18px; font-weight: 800; padding: 10px 0; border-radius: 12px; cursor: pointer;
-    border: 2px solid #3b4380; background: rgba(255,255,255,.05); color: var(--txt); }
-  .groups button.on { background: linear-gradient(90deg, var(--cyan), var(--pink)); color: #070b1f; border-color: transparent; }
+  .groups { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 22px; }
+  @media (min-width: 560px) { .groups { grid-template-columns: repeat(5, 1fr); } }
+  .groups button { font: inherit; font-size: 22px; font-weight: 900; padding: 20px 0; border-radius: 16px; cursor: pointer;
+    border: 2px solid #3b4380; background: var(--card); color: var(--txt); transition: transform .15s, border-color .15s; }
+  .groups button:hover { border-color: var(--cyan); transform: translateY(-2px); }
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .gtag { font-size: 18px; font-weight: 900; padding: 6px 18px; border-radius: 999px; color: #070b1f;
+    background: linear-gradient(90deg, var(--cyan), var(--pink)); white-space: nowrap; }
+  .back { font: inherit; font-size: 15px; color: var(--sub); background: none; border: 1px solid #3b4380; border-radius: 999px;
+    padding: 6px 14px; cursor: pointer; }
   .field { margin-top: 16px; padding: 14px 16px; border-radius: 16px; background: var(--card); border: 2px solid var(--c, #3b4380); }
   .field .lab { color: var(--c, var(--txt)); }
   .hint { font-size: 14px; color: var(--dim); margin: -2px 0 8px; line-height: 1.5; }
@@ -42,20 +48,22 @@
   .result { margin-top: 22px; padding: 16px 18px; border-radius: 16px; background: rgba(15,20,50,.75); border: 2px solid var(--lime);
     box-shadow: 0 0 20px rgba(163,230,53,.25); }
   .result pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; font-size: 16px; line-height: 1.75; margin-top: 8px; }
-  .locked { opacity: .45; pointer-events: none; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1><span class="emo">🃏</span>產品企劃卡</h1>
-  <p class="lead">先選組別，填好四格後按「儲存」。同組的人打開同一組，會看到最新存的內容。</p>
-
-  <div class="sec">
-    <div class="lab">第幾組？</div>
+  <div id="step1">
+    <h1><span class="emo">🃏</span>產品企劃卡</h1>
+    <p class="lead">你們是第幾組？</p>
     <div class="groups" id="groups"></div>
   </div>
 
-  <div id="form" class="locked">
+  <div id="form" hidden>
+    <div class="top">
+      <h1><span class="emo">🃏</span>產品企劃卡</h1>
+      <span class="gtag" id="gtag"></span>
+    </div>
+    <div class="bar" style="margin-top:8px"><button class="back" id="back">← 換組</button><span class="msg" id="lmsg"></span></div>
     <div class="field" style="--c:var(--violet)">
       <div class="lab"><span class="emo">🏷️</span>產品名稱</div>
       <input id="name" maxlength="60" placeholder="例如：抽組選號器">
@@ -123,22 +131,22 @@ function copyCard() {
   else fallback(t, ok);
 }
 function fallback(t, ok) { const a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); document.execCommand('copy'); a.remove(); ok(); }
+function loadMsg(t, err) { $('lmsg').textContent = t; $('lmsg').className = 'msg' + (err ? ' err' : ''); }
 function setMsg(t, err) { $('msg').textContent = t; $('msg').className = 'msg' + (err ? ' err' : ''); }
 
 async function pickGroup(g) {
   group = g;
-  document.querySelectorAll('#groups button').forEach(b => b.classList.toggle('on', +b.dataset.g === g));
-  $('form').classList.remove('locked');
-  try { localStorage.setItem('tamkang-card-group', g); } catch (e) {}
+  $('step1').hidden = true; $('form').hidden = false; $('gtag').textContent = '第 ' + g + ' 組';
+  setMsg(''); loadMsg(''); window.scrollTo(0, 0);
   fillForm(loadDraft(g));
-  if (!API_URL) { setMsg('（尚未連上雲端，內容只存在這台裝置）'); return; }
-  setMsg('讀取第 ' + g + ' 組…');
+  if (!API_URL) { loadMsg('（尚未連上雲端，內容只存在這台裝置）'); return; }
+  loadMsg('讀取第 ' + g + ' 組…');
   try {
     const r = await (await fetch(API_URL + '?action=get&group=' + g)).json();
     if (group !== g) return;
-    if (r.ok && r.card) { fillForm(r.card); saveDraft(); setMsg('已載入第 ' + g + ' 組（' + r.card.updated + ' 存的）'); }
-    else setMsg('第 ' + g + ' 組還沒存過');
-  } catch (e) { setMsg('讀取失敗，先用這台裝置的草稿', true); }
+    if (r.ok && r.card) { fillForm(r.card); saveDraft(); loadMsg('已載入第 ' + g + ' 組（' + r.card.updated + ' 存的）'); }
+    else loadMsg('第 ' + g + ' 組還沒存過');
+  } catch (e) { loadMsg('讀取失敗，先用這台裝置的草稿', true); }
 }
 
 async function save() {
@@ -154,12 +162,12 @@ async function save() {
 }
 
 for (let g = 1; g <= 10; g++) {
-  const b = document.createElement('button'); b.textContent = g; b.dataset.g = g; b.onclick = () => pickGroup(g); $('groups').appendChild(b);
+  const b = document.createElement('button'); b.textContent = '第 ' + g + ' 組'; b.dataset.g = g; b.onclick = () => pickGroup(g); $('groups').appendChild(b);
 }
 FIELDS.forEach(k => $(k).addEventListener('input', saveDraft));
 $('save').onclick = save;
 $('copy').onclick = copyCard;
-try { const g = +localStorage.getItem('tamkang-card-group'); if (g) pickGroup(g); } catch (e) {}
+$('back').onclick = () => { group = 0; $('form').hidden = true; $('step1').hidden = false; window.scrollTo(0, 0); };
 </script>
 </body>
 </html>
