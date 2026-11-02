@@ -12,24 +12,29 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { min-height: 100vh; font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif; color: var(--ink);
-    background: radial-gradient(circle at 90% 0%, rgba(34,211,238,.18), transparent 40%),
-                radial-gradient(circle at 0% 100%, rgba(244,114,182,.16), transparent 40%),
-                linear-gradient(135deg, var(--bg1), var(--bg2)) fixed;
-    padding: 28px 16px 60px; }
+    background: #eceef5;
+    background-image: radial-gradient(rgba(28,33,64,.07) 1px, transparent 1px); background-size: 22px 22px;
+    padding: 32px 16px 60px; }
+  /* 選組頁：整張卡在畫面正中間 */
+  body.pick { display: flex; align-items: center; justify-content: center; padding-top: 16px; padding-bottom: 16px; }
+  body.pick .paper { width: 100%; }
   .emo { font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif; }
   /* 白色紙卡 */
-  .paper { max-width: 760px; margin: 0 auto; background: var(--paper); border-radius: 18px; overflow: hidden;
-    box-shadow: 0 18px 50px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.06); }
+  .paper { max-width: 880px; margin: 0 auto; background: var(--paper); border-radius: 18px; overflow: hidden;
+    box-shadow: 0 14px 40px rgba(28,33,64,.14), 0 0 0 1px rgba(28,33,64,.06); }
   .paper::before { content: ""; display: block; height: 8px; background: linear-gradient(90deg, #22d3ee, #a78bfa, #f472b6); }
   .head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 22px 26px 16px; border-bottom: 2px solid var(--ink); }
-  .head h1 { font-size: 26px; letter-spacing: 2px; display: flex; align-items: center; gap: 10px; }
+  .head h1 { font-size: 28px; letter-spacing: 2px; display: flex; align-items: center; gap: 10px; }
   .gtag { font-size: 17px; font-weight: 900; padding: 5px 16px; border-radius: 8px; border: 2px solid var(--ink); white-space: nowrap; }
   .body { padding: 20px 26px 24px; }
-  .lead { font-size: 18px; font-weight: 800; }
+  .lead { font-size: 20px; font-weight: 800; }
+  #step1 .head { padding: 30px 34px 22px; }
+  #step1 .head h1 { font-size: 34px; }
+  #step1 .body { padding: 28px 34px 34px; }
   /* 選組 */
-  .groups { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 14px; }
+  .groups { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 18px; }
   @media (min-width: 560px) { .groups { grid-template-columns: repeat(5, 1fr); } }
-  .groups button { font: inherit; font-size: 20px; font-weight: 900; padding: 18px 0; border-radius: 12px; cursor: pointer;
+  .groups button { font: inherit; font-size: 22px; font-weight: 900; padding: 18px 0; border-radius: 12px; cursor: pointer;
     border: 2px solid var(--line); background: #fff; color: var(--ink); transition: border-color .15s, transform .15s, box-shadow .15s; }
   .groups button:hover { border-color: var(--ink); transform: translateY(-2px); box-shadow: 0 6px 14px rgba(28,33,64,.12); }
   /* 產品名稱 */
@@ -40,7 +45,7 @@
   .namerow input:focus { outline: none; border-bottom: 2px solid var(--violet); }
   /* 四格表格 */
   .grid { border: 2px solid var(--ink); border-radius: 10px; overflow: hidden; }
-  .row { display: grid; grid-template-columns: 190px 1fr; }
+  .row { display: grid; grid-template-columns: 240px 1fr; }
   .row + .row { border-top: 1px solid var(--line); }
   .k { padding: 14px 14px 14px 16px; background: var(--soft); border-right: 1px solid var(--line); border-left: 6px solid var(--c); }
   .k b { display: flex; align-items: center; gap: 6px; font-size: 18px; color: var(--c); }
@@ -69,12 +74,12 @@
   .v { padding: 14px 16px; font-size: 17px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; background: #fff; }
   .v:empty::before { content: "（沒填）"; color: var(--ink2); }
   .done-row .k { display: flex; align-items: center; }
-  .groups button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 78px; padding: 10px 0; }
+  .groups button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 100px; padding: 10px 0; }
   .groups button .st { font-size: 12px; font-weight: 700; color: var(--lime); }
   .groups button .st:empty { display: none; }
 </style>
 </head>
-<body>
+<body class="pick">
 <div class="paper" id="step1">
   <div class="head"><h1><span class="emo">🃏</span>產品企劃卡</h1></div>
   <div class="body">
@@ -161,7 +166,7 @@ function cardText(d) {
 解決什麼問題：${d.problem}
 特色：${d.feature}`;
 }
-function view(id) { ['step1', 'form', 'done'].forEach(v => $(v).hidden = v !== id); window.scrollTo(0, 0); }
+function view(id) { ['step1', 'form', 'done'].forEach(v => $(v).hidden = v !== id); document.body.classList.toggle('pick', id === 'step1'); window.scrollTo(0, 0); }
 let doneCard = null;
 function showResult(d) {
   doneCard = d;

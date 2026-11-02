@@ -12,20 +12,19 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { min-height: 100vh; font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif; color: var(--ink);
-    background: radial-gradient(circle at 90% 0%, rgba(34,211,238,.18), transparent 40%),
-                radial-gradient(circle at 0% 100%, rgba(244,114,182,.16), transparent 40%),
-                linear-gradient(135deg, var(--bg1), var(--bg2)) fixed; padding: 20px 16px 30px; }
+    background: #eceef5;
+    background-image: radial-gradient(rgba(28,33,64,.07) 1px, transparent 1px); background-size: 22px 22px; padding: 20px 16px 30px; }
   .emo { font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif; }
-  header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; color: #f8fafc; }
+  header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; color: var(--ink); }
   h1 { font-size: 26px; letter-spacing: 2px; }
-  #st { color: #c7d2fe; font-size: 14px; }
+  #st { color: var(--ink2); font-size: 14px; }
   #st button { font: inherit; margin-left: 8px; padding: 4px 14px; border-radius: 8px; cursor: pointer;
-    border: 1px solid rgba(255,255,255,.3); background: rgba(255,255,255,.08); color: #f8fafc; }
+    border: 1px solid var(--line); background: #fff; color: var(--ink); }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; align-items: start; }
   .c { background: var(--paper); border-radius: 14px; overflow: hidden; font-size: 14px; line-height: 1.55;
-    box-shadow: 0 10px 28px rgba(0,0,0,.4); }
+    box-shadow: 0 8px 24px rgba(28,33,64,.12), 0 0 0 1px rgba(28,33,64,.06); }
   .c::before { content: ""; display: block; height: 6px; background: linear-gradient(90deg, #22d3ee, #a78bfa, #f472b6); }
-  .c.empty { background: rgba(255,253,248,.12); box-shadow: none; border: 2px dashed rgba(255,255,255,.25); color: #c7d2fe; }
+  .c.empty { background: transparent; box-shadow: none; border: 2px dashed #b9bdd0; color: var(--ink2); }
   .c.empty::before { display: none; }
   .c h2 { font-size: 16px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 10px 14px 8px; border-bottom: 2px solid var(--ink); }
   .c.empty h2 { border-bottom: none; }
