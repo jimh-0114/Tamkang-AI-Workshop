@@ -6,77 +6,72 @@
 <title>產品企劃卡</title>
 <style>
   :root {
-    --bg1: #070b1f; --bg2: #1b1446;
-    --paper: #fffdf8; --ink: #1c2140; --ink2: #5b6280; --line: #d9dce8; --soft: #f3f4f9;
+    --paper: #fffdf8; --ink: #1c2140; --ink2: #5b6280; --line: #dfe2ec; --soft: #f4f5fa;
     --cyan: #0891b2; --gold: #d97706; --pink: #db2777; --lime: #65a30d; --violet: #7c3aed; --red: #dc2626;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { min-height: 100vh; font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif; color: var(--ink);
-    background: #eceef5;
-    background-image: radial-gradient(rgba(28,33,64,.07) 1px, transparent 1px); background-size: 22px 22px;
-    padding: 32px 16px 60px; }
+  body { min-height: 100vh; font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif; color: var(--ink); font-size: 18px;
+    background: #eceef5; background-image: radial-gradient(rgba(28,33,64,.07) 1px, transparent 1px); background-size: 22px 22px;
+    padding: 40px 16px 60px; }
+  .emo { font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif; }
   /* 選組頁：整張卡在畫面正中間 */
   body.pick { display: flex; align-items: center; justify-content: center; padding-top: 16px; padding-bottom: 16px; }
   body.pick .paper { width: 100%; }
-  .emo { font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif; }
   /* 白色紙卡 */
-  .paper { max-width: 880px; margin: 0 auto; background: var(--paper); border-radius: 18px; overflow: hidden;
+  .paper { max-width: 960px; margin: 0 auto; background: var(--paper); border-radius: 20px; overflow: hidden;
     box-shadow: 0 14px 40px rgba(28,33,64,.14), 0 0 0 1px rgba(28,33,64,.06); }
-  .paper::before { content: ""; display: block; height: 8px; background: linear-gradient(90deg, #22d3ee, #a78bfa, #f472b6); }
-  .head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 22px 26px 16px; border-bottom: 2px solid var(--ink); }
-  .head h1 { font-size: 28px; letter-spacing: 2px; display: flex; align-items: center; gap: 10px; }
-  .gtag { font-size: 17px; font-weight: 900; padding: 5px 16px; border-radius: 8px; border: 2px solid var(--ink); white-space: nowrap; }
-  .body { padding: 20px 26px 24px; }
-  .lead { font-size: 20px; font-weight: 800; }
-  #step1 .head { padding: 30px 34px 22px; }
-  #step1 .head h1 { font-size: 34px; }
-  #step1 .body { padding: 28px 34px 34px; }
+  .paper::before { content: ""; display: block; height: 10px; background: linear-gradient(90deg, #22d3ee, #a78bfa, #f472b6); }
+  .head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 28px 40px 22px; border-bottom: 2px solid var(--ink); }
+  .head h1 { font-size: 34px; letter-spacing: 3px; display: flex; align-items: center; gap: 12px; }
+  .gtag { font-size: 22px; font-weight: 900; padding: 6px 20px; border-radius: 10px; border: 2px solid var(--ink); white-space: nowrap; }
+  .body { padding: 30px 40px 40px; }
+  .lead { font-size: 24px; font-weight: 800; }
   /* 選組 */
-  .groups { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 18px; }
-  @media (min-width: 560px) { .groups { grid-template-columns: repeat(5, 1fr); } }
-  .groups button { font: inherit; font-size: 22px; font-weight: 900; padding: 18px 0; border-radius: 12px; cursor: pointer;
-    border: 2px solid var(--line); background: #fff; color: var(--ink); transition: border-color .15s, transform .15s, box-shadow .15s; }
+  .groups { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 22px; }
+  @media (min-width: 640px) { .groups { grid-template-columns: repeat(5, 1fr); } }
+  .groups button { font: inherit; font-size: 26px; font-weight: 900; border-radius: 14px; cursor: pointer;
+    border: 2px solid var(--line); background: #fff; color: var(--ink); transition: border-color .15s, transform .15s, box-shadow .15s;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 120px; }
   .groups button:hover { border-color: var(--ink); transform: translateY(-2px); box-shadow: 0 6px 14px rgba(28,33,64,.12); }
+  .groups button .st { font-size: 15px; font-weight: 700; color: var(--lime); }
+  .groups button .st:empty { display: none; }
   /* 產品名稱 */
-  .namerow { display: flex; align-items: baseline; gap: 12px; padding: 4px 0 18px; }
-  .namerow label { font-size: 18px; font-weight: 900; white-space: nowrap; }
-  .namerow input { flex: 1; min-width: 0; font: inherit; font-size: 20px; font-weight: 700; color: var(--ink); background: transparent;
+  .namerow { display: flex; align-items: baseline; gap: 14px; padding: 6px 0 28px; }
+  .namerow label { font-size: 24px; font-weight: 900; white-space: nowrap; }
+  .namerow input { flex: 1; min-width: 0; font: inherit; font-size: 26px; font-weight: 800; color: var(--ink); background: transparent;
     border: none; border-bottom: 2px dashed var(--ink2); padding: 4px 2px; }
   .namerow input:focus { outline: none; border-bottom: 2px solid var(--violet); }
-  /* 四格表格 */
-  .grid { border: 2px solid var(--ink); border-radius: 10px; overflow: hidden; }
-  .row { display: grid; grid-template-columns: 240px 1fr; }
-  .row + .row { border-top: 1px solid var(--line); }
-  .k { padding: 14px 14px 14px 16px; background: var(--soft); border-right: 1px solid var(--line); border-left: 6px solid var(--c); }
-  .k b { display: flex; align-items: center; gap: 6px; font-size: 18px; color: var(--c); }
-  .k small { display: block; font-size: 13px; color: var(--ink2); margin-top: 6px; line-height: 1.5; }
-  .row textarea { width: 100%; min-height: 96px; font: inherit; font-size: 17px; line-height: 1.7; color: var(--ink); background: #fff;
-    border: none; padding: 14px 16px; resize: vertical; }
-  .row textarea:focus { outline: none; background: #fbfaff; box-shadow: inset 0 0 0 2px var(--c); }
-  @media (max-width: 560px) {
-    .row { grid-template-columns: 1fr; }
-    .k { border-right: none; border-bottom: 1px solid var(--line); }
-  }
+  /* 四格：每格標題在上、填寫區在下 */
+  .grid { display: grid; gap: 18px; }
+  .row { border: 2px solid var(--line); border-left: 8px solid var(--c); border-radius: 14px; overflow: hidden; background: #fff; }
+  .row:focus-within { border-color: var(--c); }
+  .k { padding: 14px 20px 12px; background: var(--soft); display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; }
+  .k b { display: flex; align-items: center; gap: 8px; font-size: 24px; color: var(--c); white-space: nowrap; }
+  .k small { font-size: 16px; color: var(--ink2); line-height: 1.5; }
+  .row textarea { display: block; width: 100%; min-height: 110px; font: inherit; font-size: 20px; line-height: 1.7; color: var(--ink); background: #fff;
+    border: none; padding: 16px 20px; resize: vertical; }
+  .row textarea:focus { outline: none; }
   /* 按鈕與訊息 */
-  .bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
-  .btn { font: inherit; font-size: 17px; font-weight: 900; padding: 11px 28px; border-radius: 10px; cursor: pointer; border: 2px solid var(--ink);
+  .bar { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 28px; }
+  .btn { font: inherit; font-size: 22px; font-weight: 900; padding: 14px 40px; border-radius: 12px; cursor: pointer; border: 2px solid var(--ink);
     background: var(--ink); color: #fff; }
-  .btn:disabled { opacity: .5; cursor: default; }
+  .btn:disabled { opacity: .45; cursor: default; }
   .btn.ghost { background: #fff; color: var(--ink); }
   .btn.done { background: var(--lime); border-color: var(--lime); color: #fff; }
-  .back { font: inherit; font-size: 14px; color: var(--ink2); background: none; border: 1px solid var(--line); border-radius: 8px; padding: 5px 12px; cursor: pointer; }
+  .back { font: inherit; font-size: 17px; color: var(--ink2); background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 7px 16px; cursor: pointer; }
   .back:hover { border-color: var(--ink2); }
-  .msg { font-size: 14px; color: var(--ink2); }
+  .msg { font-size: 17px; color: var(--ink2); }
   .msg.err { color: var(--red); }
-  .top { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .top { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
   /* 完成頁 */
-  .dv { font-size: 20px; font-weight: 800; border-bottom: 2px solid var(--ink); padding: 2px 4px; }
-  .v { padding: 14px 16px; font-size: 17px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; background: #fff; }
+  .dv { font-size: 26px; font-weight: 800; border-bottom: 2px solid var(--ink); padding: 2px 4px; }
+  .v { padding: 16px 20px; font-size: 20px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; background: #fff; }
   .v:empty::before { content: "（沒填）"; color: var(--ink2); }
-  .done-row .k { display: flex; align-items: center; }
-  .groups button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 100px; padding: 10px 0; }
-  .groups button .st { font-size: 12px; font-weight: 700; color: var(--lime); }
-  .groups button .st:empty { display: none; }
+  @media (max-width: 560px) {
+    body { padding: 20px 12px 40px; }
+    .head { padding: 20px 20px 16px; } .head h1 { font-size: 26px; } .body { padding: 22px 20px 28px; }
+    .namerow { flex-direction: column; gap: 6px; } .groups button { min-height: 90px; font-size: 22px; }
+  }
 </style>
 </head>
 <body class="pick">
@@ -186,20 +181,33 @@ function fallback(t, ok) { const a = document.createElement('textarea'); a.value
 function loadMsg(t, err) { $('lmsg').textContent = t; $('lmsg').className = 'msg' + (err ? ' err' : ''); }
 function setMsg(t, err) { $('msg').textContent = t; $('msg').className = 'msg' + (err ? ' err' : ''); }
 
+// 選組頁一打開就抓 10 組的資料，點組別時直接帶出，不用再等雲端
+let cache = null;          // { 組別: 企劃卡 }
+let cacheReq = null;
+function fetchAll() {
+  if (!API_URL) return Promise.resolve(null);
+  cacheReq = fetch(API_URL + '?action=list').then(r => r.json()).then(r => {
+    cache = {}; (r.cards || []).forEach(c => cache[c.group] = c); markGroups(); return cache;
+  }).catch(() => null);
+  return cacheReq;
+}
+function markGroups() {
+  document.querySelectorAll('#groups button').forEach(b => b.querySelector('.st').textContent = cache && cache[+b.dataset.g] ? '✓ 已填' : '');
+}
+
 async function pickGroup(g) {
   group = g;
   view('form'); $('gtag').textContent = '第 ' + g + ' 組';
   setMsg(''); loadMsg('');
-  fillForm(loadDraft(g));
-  if (!API_URL) { loadMsg('（尚未連上雲端，內容只存在這台裝置）'); return; }
-  loadMsg('讀取第 ' + g + ' 組…'); $('save').disabled = true;
-  try {
-    const r = await (await fetch(API_URL + '?action=get&group=' + g)).json();
+  if (!cache && API_URL) {
+    loadMsg('連線中，請稍等…'); $('save').disabled = true;
+    await (cacheReq || fetchAll());
     if (group !== g) return;
-    if (r.ok && r.card) { fillForm(r.card); saveDraft(); loadMsg('已載入第 ' + g + ' 組（' + r.card.updated + ' 存的）'); }
-    else loadMsg('第 ' + g + ' 組還沒存過');
-  } catch (e) { loadMsg('讀取失敗，先用這台裝置的草稿', true); }
-  if (group === g) $('save').disabled = false;
+    $('save').disabled = false;
+  }
+  const c = cache && cache[g];
+  if (c) { fillForm(c); saveDraft(); loadMsg('已帶出第 ' + g + ' 組 ' + c.updated + ' 存的內容'); }
+  else { fillForm(loadDraft(g)); loadMsg(cache || !API_URL ? '' : '連不上雲端，先存在這台電腦，等一下再按儲存', !cache && !!API_URL); }
 }
 
 async function save() {
@@ -209,7 +217,7 @@ async function save() {
   $('save').disabled = true; setMsg('儲存中…');
   try {
     const r = await (await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(d) })).json();
-    if (r.ok) { setMsg('✅ 已儲存（' + r.card.updated + '）'); showResult(r.card); } else setMsg('儲存失敗：' + r.error, true);
+    if (r.ok) { if (cache) { cache[r.card.group] = r.card; markGroups(); } setMsg(''); showResult(r.card); } else setMsg('儲存失敗：' + r.error, true);
   } catch (e) { setMsg('儲存失敗，請再按一次', true); }
   $('save').disabled = false;
 }
@@ -217,20 +225,11 @@ async function save() {
 for (let g = 1; g <= 10; g++) {
   const b = document.createElement('button'); b.innerHTML = '第 ' + g + ' 組<span class="st"></span>'; b.dataset.g = g; b.onclick = () => pickGroup(g); $('groups').appendChild(b);
 }
-// 選組頁標出已經存過的組，避免選錯組蓋掉別組
-async function loadGroups() {
-  if (!API_URL) return;
-  try {
-    const r = await (await fetch(API_URL + '?action=list')).json();
-    const has = new Set((r.cards || []).map(c => c.group));
-    document.querySelectorAll('#groups button').forEach(b => b.querySelector('.st').textContent = has.has(+b.dataset.g) ? '✓ 已填' : '');
-  } catch (e) {}
-}
-loadGroups();
+fetchAll();
 FIELDS.forEach(k => $(k).addEventListener('input', saveDraft));
 $('save').onclick = save;
 $('copy').onclick = copyCard;
-$('back').onclick = () => { group = 0; view('step1'); loadGroups(); };
+$('back').onclick = () => { group = 0; view('step1'); fetchAll(); };
 $('edit').onclick = () => { view('form'); setMsg(''); };
 </script>
 </body>
