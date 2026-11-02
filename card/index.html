@@ -37,6 +37,11 @@
   .btn:disabled { opacity: .5; cursor: default; }
   .msg { font-size: 15px; color: var(--sub); }
   .msg.err { color: var(--red); }
+  .btn.ghost { background: rgba(251,191,36,.15); color: var(--gold); border: 2px solid var(--gold); }
+  .btn.done { background: var(--lime); color: #070b1f; border-color: var(--lime); }
+  .result { margin-top: 22px; padding: 16px 18px; border-radius: 16px; background: rgba(15,20,50,.75); border: 2px solid var(--lime);
+    box-shadow: 0 0 20px rgba(163,230,53,.25); }
+  .result pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; font-size: 16px; line-height: 1.75; margin-top: 8px; }
   .locked { opacity: .45; pointer-events: none; }
 </style>
 </head>
@@ -80,6 +85,12 @@
       <button class="btn" id="save">💾 儲存</button>
       <span class="msg" id="msg"></span>
     </div>
+
+    <div class="result" id="result" hidden>
+      <div class="lab"><span class="emo">✅</span>我們的產品企劃卡</div>
+      <pre id="full"></pre>
+      <div class="bar"><button class="btn ghost" id="copy">📋 複製企劃卡</button></div>
+    </div>
   </div>
 </div>
 
@@ -93,9 +104,25 @@ let group = 0;
 
 function draftKey(g) { return 'tamkang-card-' + g; }
 function readForm() { const d = { group }; FIELDS.forEach(k => d[k] = $(k).value.trim()); return d; }
-function fillForm(d) { FIELDS.forEach(k => $(k).value = (d && d[k]) || ''); }
+function fillForm(d) { FIELDS.forEach(k => $(k).value = (d && d[k]) || ''); $('result').hidden = true; }
 function saveDraft() { try { localStorage.setItem(draftKey(group), JSON.stringify(readForm())); } catch (e) {} }
 function loadDraft(g) { try { return JSON.parse(localStorage.getItem(draftKey(g)) || 'null'); } catch (e) { return null; } }
+function cardText(d) {
+  return `產品名稱：${d.name}
+給誰用：${d.who}
+什麼時候用：${d.when}
+解決什麼問題：${d.problem}
+特色：${d.feature}`;
+}
+function showResult(d) { $('full').textContent = cardText(d); $('result').hidden = false; }
+function copyCard() {
+  const t = $('full').textContent;
+  const ok = () => { $('copy').textContent = '✅ 已複製'; $('copy').classList.add('done');
+    setTimeout(() => { $('copy').textContent = '📋 複製企劃卡'; $('copy').classList.remove('done'); }, 1800); };
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(ok, () => fallback(t, ok));
+  else fallback(t, ok);
+}
+function fallback(t, ok) { const a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); document.execCommand('copy'); a.remove(); ok(); }
 function setMsg(t, err) { $('msg').textContent = t; $('msg').className = 'msg' + (err ? ' err' : ''); }
 
 async function pickGroup(g) {
@@ -117,11 +144,11 @@ async function pickGroup(g) {
 async function save() {
   const d = readForm();
   saveDraft();
-  if (!API_URL) { setMsg('已存在這台裝置（尚未連上雲端）'); return; }
+  if (!API_URL) { setMsg('已存在這台裝置（尚未連上雲端）'); showResult(d); return; }
   $('save').disabled = true; setMsg('儲存中…');
   try {
     const r = await (await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(d) })).json();
-    if (r.ok) setMsg('✅ 已儲存（' + r.card.updated + '）'); else setMsg('儲存失敗：' + r.error, true);
+    if (r.ok) { setMsg('✅ 已儲存（' + r.card.updated + '）'); showResult(r.card); } else setMsg('儲存失敗：' + r.error, true);
   } catch (e) { setMsg('儲存失敗，請再按一次', true); }
   $('save').disabled = false;
 }
@@ -131,6 +158,7 @@ for (let g = 1; g <= 10; g++) {
 }
 FIELDS.forEach(k => $(k).addEventListener('input', saveDraft));
 $('save').onclick = save;
+$('copy').onclick = copyCard;
 try { const g = +localStorage.getItem('tamkang-card-group'); if (g) pickGroup(g); } catch (e) {}
 </script>
 </body>
