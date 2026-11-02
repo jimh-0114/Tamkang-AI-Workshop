@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>企劃卡總覽</title>
+<style>
+  :root {
+    --bg1: #070b1f; --bg2: #1b1446; --card: rgba(19,26,58,.88); --txt: #f8fafc; --sub: #c7d2fe; --dim: #8b93c9;
+    --cyan: #22d3ee; --pink: #f472b6; --gold: #fbbf24; --lime: #a3e635; --violet: #a78bfa; --red: #f87171;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { min-height: 100vh; font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif; color: var(--txt);
+    background: radial-gradient(circle at 90% 0%, rgba(34,211,238,.16), transparent 40%),
+                radial-gradient(circle at 0% 100%, rgba(244,114,182,.14), transparent 40%),
+                linear-gradient(135deg, var(--bg1), var(--bg2)) fixed; padding: 18px 16px 30px; }
+  .emo { font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif; }
+  header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  h1 { font-size: 26px; }
+  #st { color: var(--dim); font-size: 14px; }
+  #st button { font: inherit; margin-left: 8px; padding: 4px 14px; border-radius: 999px; cursor: pointer;
+    border: 1px solid #3b4380; background: rgba(255,255,255,.06); color: var(--txt); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .c { background: var(--card); border: 2px solid #3b4380; border-radius: 16px; padding: 12px 14px; font-size: 14px; line-height: 1.55; }
+  .c.has { border-color: var(--cyan); box-shadow: 0 0 18px rgba(34,211,238,.25); }
+  .c h2 { font-size: 18px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .c h2 small { font-size: 12px; color: var(--dim); font-weight: 400; }
+  .c .nm { color: var(--gold); font-size: 17px; font-weight: 800; margin: 4px 0 6px; }
+  .c .r { margin-top: 4px; } .c .r b { color: var(--k); margin-right: 4px; }
+  .c .empty { color: var(--dim); margin-top: 8px; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="emo">🃏</span>各組企劃卡</h1>
+  <div id="st">讀取中…</div>
+</header>
+<div class="grid" id="grid"></div>
+<script>
+// 跟 index.html 用同一個 GAS 網址
+const API_URL = '';
+const ROWS = [['who', '🎯 給誰用', 'var(--cyan)'], ['when', '⏰ 什麼時候用', 'var(--gold)'], ['problem', '🧩 解決什麼問題', 'var(--pink)'], ['feature', '⭐ 特色', 'var(--lime)']];
+const esc = s => String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function render(cards) {
+  const by = {}; cards.forEach(c => by[c.group] = c);
+  let h = '';
+  for (let g = 1; g <= 10; g++) {
+    const c = by[g];
+    h += `<div class="c${c ? ' has' : ''}"><h2>第 ${g} 組${c ? `<small>${esc(c.updated)}</small>` : ''}</h2>`;
+    if (!c) { h += '<div class="empty">還沒填</div></div>'; continue; }
+    h += `<div class="nm">${esc(c.name) || '（未命名）'}</div>`;
+    ROWS.forEach(([k, l, col]) => h += `<div class="r" style="--k:${col}"><b>${l}</b>${esc(c[k]) || '<span style="color:var(--dim)">—</span>'}</div>`);
+    h += '</div>';
+  }
+  document.getElementById('grid').innerHTML = h;
+}
+
+async function load() {
+  const st = document.getElementById('st');
+  if (!API_URL) { st.textContent = '尚未設定 GAS 網址'; render([]); return; }
+  try {
+    const r = await (await fetch(API_URL + '?action=list')).json();
+    if (!r.ok) throw new Error(r.error);
+    render(r.cards);
+    st.innerHTML = `已填 ${r.cards.length} / 10 組　${new Date().toTimeString().slice(0, 5)} 更新<button onclick="load()">重新整理</button>`;
+  } catch (e) { st.innerHTML = '讀取失敗<button onclick="load()">重試</button>'; }
+}
+load();
+setInterval(load, 20000);
+</script>
+</body>
+</html>
