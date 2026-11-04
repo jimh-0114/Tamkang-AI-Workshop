@@ -159,6 +159,12 @@
   #pace .pnum { position: absolute; right: 18px; top: 14px; font-size: 20px; font-weight: 700; color: var(--dim); font-variant-numeric: tabular-nums; }
   #pace.warn .pbar { background: var(--gold); } #pace.warn .pnum { color: var(--gold); }
   #pace.over .pbar { background: var(--red); } #pace.over .pnum { color: var(--red); }
+  /* 11-04 Jim：第 15 頁規則與畫面需求現場填寫，複製時自動編號 */
+  .fwfill { display: flex; flex-direction: column; }
+  .fwfill textarea { flex: 1; width: 100%; resize: none; margin: 4px 0 8px; padding: 8px 12px; font: inherit; font-size: 24px; line-height: 1.55;
+    color: var(--txt); background: rgba(255,255,255,.05); border: 1px dashed rgba(199,210,254,.35); border-radius: 10px; outline: none; }
+  .fwfill textarea:focus { border-color: var(--gold); background: rgba(255,255,255,.08); }
+  .fwfill textarea::placeholder { color: var(--dim); }
   .hint { position: fixed; left: 12px; bottom: 8px; font-size: 12px; color: #555; }
   .btn { display: inline-block; margin-top: 18px; padding: 12px 30px; border-radius: 999px; font-size: 24px; font-weight: 800;
     background: linear-gradient(90deg, var(--lime), var(--cyan)); color: #070b1f; text-decoration: none; }
@@ -426,40 +432,20 @@
         <div class="fwl"><b style="color:var(--cyan)">【要解決的問題】</b>解決口頭點名不夠公平，紙籤又慢，還可能抽到重複的組</div>
         <div class="fwl"><b style="color:var(--cyan)">【特色】</b>可設定總組數和一次抽幾組、數字跳動動畫、抽過不再抽中、一鍵重來</div>
     </div>
-    <div class="fwbox" style="flex:1.25;font-size:22px;line-height:1.55">
+    <div class="fwbox fwfill" style="flex:1.25">
         <div class="fwl"><b style="color:var(--gold)">【規則】</b></div>
-        <div class="fwl fwi">1. 按一次只抽一組，不可以一次抽出多組。</div>
-        <div class="fwl fwi">2. 抽過的組別不會再被抽到。</div>
-        <div class="fwl fwi">3. 抽之前可以先勾掉不參加的組別（例如請假、已發表過）。</div>
-        <div class="fwl fwi">4. 跳動動畫只出現還沒抽過的組別。</div>
-        <div class="fwl fwi">5. 上台後可以標記「已發表」。</div>
-        <div class="fwl fwi">6. 按「重來」要先跳出確認，避免誤按清空。</div>
+        <textarea id="fwRules" spellcheck="false" placeholder="點這裡輸入規則，一行一條"></textarea>
         <div class="fwl"><b style="color:var(--pink)">【畫面需求】</b></div>
-        <div class="fwl fwi">1. 可以一次貼上整份組別名單，一行一組，可從 Excel 複製。</div>
-        <div class="fwl fwi">2. 抽中後結果放大到全螢幕，教室最後一排也看得清楚，按一下回到設定畫面。</div>
-        <div class="fwl fwi">3. 結果直接顯示「第 X 組」和組名，旁邊列出已抽出的順序（第 1 個上台、第 2 個上台…）。</div>
-        <div class="fwl fwi">4. 抽組時和抽中時有音效。</div>
+        <textarea id="fwUI" spellcheck="false" placeholder="點這裡輸入畫面需求，一行一條"></textarea>
     </div>
   </div>
-  <div style="text-align:center"><button class="copy" data-text="請幫我用 Canvas 做一個可以直接在網頁上操作的小工具，介面使用繁體中文。工具依使用者的設定，隨機抽出組別。
+  <div style="text-align:center"><button class="copy" id="fwCopy" data-text="請幫我用 Canvas 做一個可以直接在網頁上操作的小工具，介面使用繁體中文。工具依使用者的設定，隨機抽出組別。
 【工具名稱】抽組選號器
 【給誰用】上課的講師
 【什麼時候用】各組上台發表前，抽出要上台的組別
 【要解決的問題】解決口頭點名不夠公平，紙籤又慢，還可能抽到重複的組。
 【特色】可以設定總組數和一次抽幾組；抽的時候有數字跳動的動畫；抽過的組不會再被抽到；可以一鍵重來。
-請依照上面的情境，幫我設計使用者要輸入的欄位，以及工具要產出的內容。
-【規則】
-1. 按一次只抽一組，不可以一次抽出多組。
-2. 抽過的組別不會再被抽到。
-3. 抽之前可以先勾掉不參加的組別（例如請假、已發表過）。
-4. 跳動動畫只出現還沒抽過的組別。
-5. 上台後可以標記「已發表」。
-6. 按「重來」要先跳出確認，避免誤按清空。
-【畫面需求】
-1. 可以一次貼上整份組別名單，一行一組，可從 Excel 複製。
-2. 抽中後結果放大到全螢幕，教室最後一排也看得清楚，按一下回到設定畫面。
-3. 結果直接顯示「第 X 組」和組名，旁邊列出已抽出的順序（第 1 個上台、第 2 個上台…）。
-4. 抽組時和抽中時有音效。">📋 複製提示詞（框架版）</button></div>
+請依照上面的情境，幫我設計使用者要輸入的欄位，以及工具要產出的內容。">📋 複製提示詞（框架版）</button></div>
 </section>
 
 <!-- 第二次製作（左邊講師框架＋複製鈕，右邊倒數） -->
@@ -621,6 +607,7 @@
     if (on.length) on[on.length - 1].classList.remove("on"); else go(cur - 1);
   }
   addEventListener("keydown", (e) => {
+    if (e.target.tagName === "TEXTAREA") { if (e.key === "Escape") e.target.blur(); return; }  // 打字時不換頁，按 Esc 離開輸入框
     if ([" ", "Enter"].includes(e.key)) e.preventDefault();  // 避免按到剛點過的按鈕（開始、複製）
     if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) next();
     if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) prev();
@@ -749,10 +736,16 @@
     return { play, stop };
   })();
 
+  // ── 第 15 頁：把現場填的規則、畫面需求接到提示詞後面，一行一條自動編號 ──
+  function buildFw(head) {
+    const list = (id) => document.getElementById(id).value.split(/\r?\n/).map((x) => x.replace(/^\s*\d+\s*[.、．)]\s*/, "").trim()).filter(Boolean)
+      .map((x, i) => `${i + 1}. ${x}`).join("\n");
+    return `${head}\n【規則】\n${list("fwRules")}\n【畫面需求】\n${list("fwUI")}`;
+  }
   // ── 複製提示詞 ──
   document.querySelectorAll(".copy").forEach((b) => b.addEventListener("click", async (e) => {
     e.stopPropagation();
-    const t = b.dataset.text;
+    const t = b.id === "fwCopy" ? buildFw(b.dataset.text) : b.dataset.text;
     try { await navigator.clipboard.writeText(t); }
     catch { const ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
     const old = b.textContent; b.textContent = "✓ 已複製，貼到 Gemini"; b.classList.add("done");
