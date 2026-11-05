@@ -11,6 +11,7 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; background: #000; overflow: hidden; }
+  body { position: fixed; inset: 0; }  /* 11-05：手機上 1600px 舞台不要把版面撐大 */
   body { font-family: "Microsoft JhengHei", "PingFang TC", sans-serif; color: var(--txt); }
   /* 固定 1600×900 舞台，依視窗等比縮放 */
   #stage { position: absolute; width: 1600px; height: 900px; left: 50%; top: 50%; transform-origin: center; }
@@ -173,6 +174,18 @@
   .fwfill textarea:focus { border-color: var(--gold); background: rgba(255,255,255,.08); }
   .fwfill textarea::placeholder { color: var(--dim); }
   .hint { position: fixed; left: 12px; bottom: 8px; font-size: 12px; color: #555; }
+  /* 11-05 Jim：學生掃碼用手機看，可左右滑動或按兩側按鈕翻頁；只在觸控裝置顯示 */
+  .tnav { display: none; position: fixed; bottom: 14px; z-index: 100; width: 52px; height: 52px; border-radius: 50%; border: 0;
+          background: rgba(255,255,255,.16); color: #fff; font-size: 28px; line-height: 52px; text-align: center; -webkit-tap-highlight-color: transparent; }
+  .tnav:active { background: rgba(34,211,238,.5); }
+  #tprev { left: 14px; } #tnext { right: 14px; }
+  #tpage { display: none; position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%); z-index: 100; font-size: 14px; color: #aaa; }
+  #rotate { display: none; position: fixed; left: 0; right: 0; top: 14px; text-align: center; font-size: 14px; color: #aaa; z-index: 100; }
+  @media (pointer: coarse) {
+    .tnav, #tpage { display: block; }
+    .hint, #pace { display: none !important; }
+  }
+  @media (pointer: coarse) and (orientation: portrait) { #rotate { display: block; } }
   .btn { display: inline-block; margin-top: 18px; padding: 12px 30px; border-radius: 999px; font-size: 24px; font-weight: 800;
     background: linear-gradient(90deg, var(--lime), var(--cyan)); color: #070b1f; text-decoration: none; }
   /* 發想討論頁右欄：上方 QR Code、下方倒數 */
@@ -198,7 +211,7 @@
     <div class="org in" style="--d:.1">淡江大學教育科技學系 × 翰林出版數位部</div>
     <h1 class="in" style="--d:.3">數位學習與 AI 相遇</h1>
     <div class="subt in" style="--d:.55">AI 導入後的數位教學資源之開發工作坊</div>
-    <div class="meta in" style="--d:.8">講師　黃浚昕｜翰林出版數位部<br>2026.11.05（四）　文館 L105</div>
+    <div class="in" style="--d:.8;display:flex;align-items:flex-end;gap:36px;margin-top:56px"><div class="meta" style="margin-top:0">講師　黃浚昕｜翰林出版數位部<br>2026.11.05（四）　文館 L105</div><div style="text-align:center;flex:none"><svg viewBox="0 0 37 37" width="170" height="170" shape-rendering="crispEdges" style="display:block;background:#fff;border-radius:10px"><path d="M2,2h1v1h-1zM3,2h1v1h-1zM4,2h1v1h-1zM5,2h1v1h-1zM6,2h1v1h-1zM7,2h1v1h-1zM8,2h1v1h-1zM10,2h1v1h-1zM11,2h1v1h-1zM13,2h1v1h-1zM15,2h1v1h-1zM18,2h1v1h-1zM19,2h1v1h-1zM20,2h1v1h-1zM21,2h1v1h-1zM22,2h1v1h-1zM24,2h1v1h-1zM25,2h1v1h-1zM26,2h1v1h-1zM28,2h1v1h-1zM29,2h1v1h-1zM30,2h1v1h-1zM31,2h1v1h-1zM32,2h1v1h-1zM33,2h1v1h-1zM34,2h1v1h-1zM2,3h1v1h-1zM8,3h1v1h-1zM10,3h1v1h-1zM11,3h1v1h-1zM12,3h1v1h-1zM13,3h1v1h-1zM14,3h1v1h-1zM15,3h1v1h-1zM20,3h1v1h-1zM22,3h1v1h-1zM25,3h1v1h-1zM26,3h1v1h-1zM28,3h1v1h-1zM34,3h1v1h-1zM2,4h1v1h-1zM4,4h1v1h-1zM5,4h1v1h-1zM6,4h1v1h-1zM8,4h1v1h-1zM11,4h1v1h-1zM12,4h1v1h-1zM14,4h1v1h-1zM19,4h1v1h-1zM21,4h1v1h-1zM22,4h1v1h-1zM24,4h1v1h-1zM26,4h1v1h-1zM28,4h1v1h-1zM30,4h1v1h-1zM31,4h1v1h-1zM32,4h1v1h-1zM34,4h1v1h-1zM2,5h1v1h-1zM4,5h1v1h-1zM5,5h1v1h-1zM6,5h1v1h-1zM8,5h1v1h-1zM10,5h1v1h-1zM11,5h1v1h-1zM14,5h1v1h-1zM16,5h1v1h-1zM17,5h1v1h-1zM18,5h1v1h-1zM22,5h1v1h-1zM24,5h1v1h-1zM25,5h1v1h-1zM26,5h1v1h-1zM28,5h1v1h-1zM30,5h1v1h-1zM31,5h1v1h-1zM32,5h1v1h-1zM34,5h1v1h-1zM2,6h1v1h-1zM4,6h1v1h-1zM5,6h1v1h-1zM6,6h1v1h-1zM8,6h1v1h-1zM11,6h1v1h-1zM13,6h1v1h-1zM16,6h1v1h-1zM22,6h1v1h-1zM26,6h1v1h-1zM28,6h1v1h-1zM30,6h1v1h-1zM31,6h1v1h-1zM32,6h1v1h-1zM34,6h1v1h-1zM2,7h1v1h-1zM8,7h1v1h-1zM13,7h1v1h-1zM14,7h1v1h-1zM15,7h1v1h-1zM21,7h1v1h-1zM22,7h1v1h-1zM24,7h1v1h-1zM26,7h1v1h-1zM28,7h1v1h-1zM34,7h1v1h-1zM2,8h1v1h-1zM3,8h1v1h-1zM4,8h1v1h-1zM5,8h1v1h-1zM6,8h1v1h-1zM7,8h1v1h-1zM8,8h1v1h-1zM10,8h1v1h-1zM12,8h1v1h-1zM14,8h1v1h-1zM16,8h1v1h-1zM18,8h1v1h-1zM20,8h1v1h-1zM22,8h1v1h-1zM24,8h1v1h-1zM26,8h1v1h-1zM28,8h1v1h-1zM29,8h1v1h-1zM30,8h1v1h-1zM31,8h1v1h-1zM32,8h1v1h-1zM33,8h1v1h-1zM34,8h1v1h-1zM10,9h1v1h-1zM12,9h1v1h-1zM19,9h1v1h-1zM22,9h1v1h-1zM2,10h1v1h-1zM4,10h1v1h-1zM5,10h1v1h-1zM7,10h1v1h-1zM8,10h1v1h-1zM9,10h1v1h-1zM14,10h1v1h-1zM16,10h1v1h-1zM19,10h1v1h-1zM20,10h1v1h-1zM21,10h1v1h-1zM22,10h1v1h-1zM23,10h1v1h-1zM24,10h1v1h-1zM28,10h1v1h-1zM31,10h1v1h-1zM33,10h1v1h-1zM34,10h1v1h-1zM2,11h1v1h-1zM4,11h1v1h-1zM5,11h1v1h-1zM7,11h1v1h-1zM9,11h1v1h-1zM12,11h1v1h-1zM13,11h1v1h-1zM14,11h1v1h-1zM17,11h1v1h-1zM18,11h1v1h-1zM21,11h1v1h-1zM22,11h1v1h-1zM24,11h1v1h-1zM25,11h1v1h-1zM26,11h1v1h-1zM28,11h1v1h-1zM29,11h1v1h-1zM31,11h1v1h-1zM32,11h1v1h-1zM34,11h1v1h-1zM3,12h1v1h-1zM4,12h1v1h-1zM6,12h1v1h-1zM8,12h1v1h-1zM10,12h1v1h-1zM11,12h1v1h-1zM12,12h1v1h-1zM13,12h1v1h-1zM14,12h1v1h-1zM16,12h1v1h-1zM18,12h1v1h-1zM19,12h1v1h-1zM23,12h1v1h-1zM24,12h1v1h-1zM25,12h1v1h-1zM27,12h1v1h-1zM29,12h1v1h-1zM30,12h1v1h-1zM31,12h1v1h-1zM33,12h1v1h-1zM34,12h1v1h-1zM4,13h1v1h-1zM6,13h1v1h-1zM9,13h1v1h-1zM13,13h1v1h-1zM14,13h1v1h-1zM15,13h1v1h-1zM16,13h1v1h-1zM17,13h1v1h-1zM20,13h1v1h-1zM21,13h1v1h-1zM29,13h1v1h-1zM31,13h1v1h-1zM3,14h1v1h-1zM5,14h1v1h-1zM7,14h1v1h-1zM8,14h1v1h-1zM9,14h1v1h-1zM13,14h1v1h-1zM20,14h1v1h-1zM21,14h1v1h-1zM24,14h1v1h-1zM25,14h1v1h-1zM27,14h1v1h-1zM29,14h1v1h-1zM30,14h1v1h-1zM31,14h1v1h-1zM2,15h1v1h-1zM5,15h1v1h-1zM7,15h1v1h-1zM10,15h1v1h-1zM11,15h1v1h-1zM12,15h1v1h-1zM13,15h1v1h-1zM18,15h1v1h-1zM19,15h1v1h-1zM20,15h1v1h-1zM24,15h1v1h-1zM26,15h1v1h-1zM27,15h1v1h-1zM28,15h1v1h-1zM32,15h1v1h-1zM33,15h1v1h-1zM4,16h1v1h-1zM7,16h1v1h-1zM8,16h1v1h-1zM15,16h1v1h-1zM16,16h1v1h-1zM17,16h1v1h-1zM18,16h1v1h-1zM20,16h1v1h-1zM24,16h1v1h-1zM26,16h1v1h-1zM28,16h1v1h-1zM29,16h1v1h-1zM30,16h1v1h-1zM32,16h1v1h-1zM5,17h1v1h-1zM6,17h1v1h-1zM10,17h1v1h-1zM13,17h1v1h-1zM18,17h1v1h-1zM21,17h1v1h-1zM22,17h1v1h-1zM23,17h1v1h-1zM24,17h1v1h-1zM25,17h1v1h-1zM26,17h1v1h-1zM27,17h1v1h-1zM28,17h1v1h-1zM29,17h1v1h-1zM30,17h1v1h-1zM31,17h1v1h-1zM32,17h1v1h-1zM2,18h1v1h-1zM4,18h1v1h-1zM5,18h1v1h-1zM6,18h1v1h-1zM7,18h1v1h-1zM8,18h1v1h-1zM11,18h1v1h-1zM13,18h1v1h-1zM14,18h1v1h-1zM15,18h1v1h-1zM17,18h1v1h-1zM20,18h1v1h-1zM21,18h1v1h-1zM22,18h1v1h-1zM23,18h1v1h-1zM27,18h1v1h-1zM28,18h1v1h-1zM30,18h1v1h-1zM31,18h1v1h-1zM32,18h1v1h-1zM3,19h1v1h-1zM5,19h1v1h-1zM6,19h1v1h-1zM7,19h1v1h-1zM9,19h1v1h-1zM12,19h1v1h-1zM15,19h1v1h-1zM16,19h1v1h-1zM17,19h1v1h-1zM18,19h1v1h-1zM19,19h1v1h-1zM22,19h1v1h-1zM25,19h1v1h-1zM26,19h1v1h-1zM27,19h1v1h-1zM28,19h1v1h-1zM30,19h1v1h-1zM31,19h1v1h-1zM33,19h1v1h-1zM34,19h1v1h-1zM3,20h1v1h-1zM7,20h1v1h-1zM8,20h1v1h-1zM9,20h1v1h-1zM11,20h1v1h-1zM13,20h1v1h-1zM16,20h1v1h-1zM17,20h1v1h-1zM18,20h1v1h-1zM19,20h1v1h-1zM22,20h1v1h-1zM23,20h1v1h-1zM27,20h1v1h-1zM29,20h1v1h-1zM30,20h1v1h-1zM32,20h1v1h-1zM33,20h1v1h-1zM3,21h1v1h-1zM5,21h1v1h-1zM6,21h1v1h-1zM7,21h1v1h-1zM9,21h1v1h-1zM10,21h1v1h-1zM13,21h1v1h-1zM14,21h1v1h-1zM16,21h1v1h-1zM17,21h1v1h-1zM18,21h1v1h-1zM21,21h1v1h-1zM25,21h1v1h-1zM26,21h1v1h-1zM27,21h1v1h-1zM30,21h1v1h-1zM33,21h1v1h-1zM2,22h1v1h-1zM4,22h1v1h-1zM6,22h1v1h-1zM8,22h1v1h-1zM9,22h1v1h-1zM10,22h1v1h-1zM11,22h1v1h-1zM12,22h1v1h-1zM13,22h1v1h-1zM17,22h1v1h-1zM20,22h1v1h-1zM21,22h1v1h-1zM23,22h1v1h-1zM24,22h1v1h-1zM25,22h1v1h-1zM30,22h1v1h-1zM31,22h1v1h-1zM32,22h1v1h-1zM33,22h1v1h-1zM34,22h1v1h-1zM2,23h1v1h-1zM3,23h1v1h-1zM4,23h1v1h-1zM9,23h1v1h-1zM12,23h1v1h-1zM14,23h1v1h-1zM15,23h1v1h-1zM17,23h1v1h-1zM20,23h1v1h-1zM23,23h1v1h-1zM25,23h1v1h-1zM28,23h1v1h-1zM31,23h1v1h-1zM32,23h1v1h-1zM34,23h1v1h-1zM4,24h1v1h-1zM6,24h1v1h-1zM8,24h1v1h-1zM9,24h1v1h-1zM11,24h1v1h-1zM12,24h1v1h-1zM16,24h1v1h-1zM18,24h1v1h-1zM25,24h1v1h-1zM29,24h1v1h-1zM32,24h1v1h-1zM33,24h1v1h-1zM34,24h1v1h-1zM3,25h1v1h-1zM5,25h1v1h-1zM7,25h1v1h-1zM9,25h1v1h-1zM10,25h1v1h-1zM15,25h1v1h-1zM18,25h1v1h-1zM21,25h1v1h-1zM25,25h1v1h-1zM27,25h1v1h-1zM28,25h1v1h-1zM30,25h1v1h-1zM33,25h1v1h-1zM34,25h1v1h-1zM2,26h1v1h-1zM5,26h1v1h-1zM6,26h1v1h-1zM7,26h1v1h-1zM8,26h1v1h-1zM9,26h1v1h-1zM10,26h1v1h-1zM15,26h1v1h-1zM17,26h1v1h-1zM19,26h1v1h-1zM20,26h1v1h-1zM26,26h1v1h-1zM27,26h1v1h-1zM28,26h1v1h-1zM29,26h1v1h-1zM30,26h1v1h-1zM10,27h1v1h-1zM11,27h1v1h-1zM12,27h1v1h-1zM14,27h1v1h-1zM17,27h1v1h-1zM18,27h1v1h-1zM19,27h1v1h-1zM21,27h1v1h-1zM23,27h1v1h-1zM24,27h1v1h-1zM25,27h1v1h-1zM26,27h1v1h-1zM30,27h1v1h-1zM31,27h1v1h-1zM2,28h1v1h-1zM3,28h1v1h-1zM4,28h1v1h-1zM5,28h1v1h-1zM6,28h1v1h-1zM7,28h1v1h-1zM8,28h1v1h-1zM10,28h1v1h-1zM11,28h1v1h-1zM12,28h1v1h-1zM14,28h1v1h-1zM15,28h1v1h-1zM16,28h1v1h-1zM21,28h1v1h-1zM23,28h1v1h-1zM25,28h1v1h-1zM26,28h1v1h-1zM28,28h1v1h-1zM30,28h1v1h-1zM2,29h1v1h-1zM8,29h1v1h-1zM10,29h1v1h-1zM11,29h1v1h-1zM13,29h1v1h-1zM14,29h1v1h-1zM16,29h1v1h-1zM17,29h1v1h-1zM21,29h1v1h-1zM22,29h1v1h-1zM23,29h1v1h-1zM24,29h1v1h-1zM25,29h1v1h-1zM26,29h1v1h-1zM30,29h1v1h-1zM31,29h1v1h-1zM32,29h1v1h-1zM33,29h1v1h-1zM2,30h1v1h-1zM4,30h1v1h-1zM5,30h1v1h-1zM6,30h1v1h-1zM8,30h1v1h-1zM16,30h1v1h-1zM17,30h1v1h-1zM19,30h1v1h-1zM21,30h1v1h-1zM23,30h1v1h-1zM25,30h1v1h-1zM26,30h1v1h-1zM27,30h1v1h-1zM28,30h1v1h-1zM29,30h1v1h-1zM30,30h1v1h-1zM32,30h1v1h-1zM33,30h1v1h-1zM2,31h1v1h-1zM4,31h1v1h-1zM5,31h1v1h-1zM6,31h1v1h-1zM8,31h1v1h-1zM10,31h1v1h-1zM12,31h1v1h-1zM14,31h1v1h-1zM15,31h1v1h-1zM19,31h1v1h-1zM20,31h1v1h-1zM24,31h1v1h-1zM25,31h1v1h-1zM29,31h1v1h-1zM31,31h1v1h-1zM32,31h1v1h-1zM34,31h1v1h-1zM2,32h1v1h-1zM4,32h1v1h-1zM5,32h1v1h-1zM6,32h1v1h-1zM8,32h1v1h-1zM10,32h1v1h-1zM13,32h1v1h-1zM14,32h1v1h-1zM15,32h1v1h-1zM16,32h1v1h-1zM19,32h1v1h-1zM22,32h1v1h-1zM23,32h1v1h-1zM24,32h1v1h-1zM28,32h1v1h-1zM29,32h1v1h-1zM31,32h1v1h-1zM32,32h1v1h-1zM2,33h1v1h-1zM8,33h1v1h-1zM13,33h1v1h-1zM14,33h1v1h-1zM17,33h1v1h-1zM18,33h1v1h-1zM19,33h1v1h-1zM21,33h1v1h-1zM22,33h1v1h-1zM26,33h1v1h-1zM27,33h1v1h-1zM29,33h1v1h-1zM30,33h1v1h-1zM34,33h1v1h-1zM2,34h1v1h-1zM3,34h1v1h-1zM4,34h1v1h-1zM5,34h1v1h-1zM6,34h1v1h-1zM7,34h1v1h-1zM8,34h1v1h-1zM10,34h1v1h-1zM11,34h1v1h-1zM14,34h1v1h-1zM15,34h1v1h-1zM16,34h1v1h-1zM17,34h1v1h-1zM18,34h1v1h-1zM19,34h1v1h-1zM20,34h1v1h-1zM21,34h1v1h-1zM23,34h1v1h-1zM24,34h1v1h-1zM25,34h1v1h-1zM28,34h1v1h-1zM30,34h1v1h-1z" fill="#070b1f"/></svg><div style="font-size:18px;color:var(--sub);margin-top:8px;font-weight:700">掃描開啟簡報</div></div></div>
   </div>
 </section>
 
@@ -557,6 +570,7 @@
 
 </div>
 <div class="hint">← → 換頁　F 全螢幕</div>
+<button class="tnav" id="tprev" aria-label="上一頁">‹</button><button class="tnav" id="tnext" aria-label="下一頁">›</button><div id="tpage"></div><div id="rotate">手機橫放看得比較清楚</div>
 
 <script>
   // ── 舞台縮放 ──
@@ -586,6 +600,7 @@
     void slides[cur].offsetWidth;
     slides[cur].classList.add("active");
     location.hash = cur + 1;
+    const tp = document.getElementById("tpage"); if (tp) tp.textContent = (cur + 1) + " / " + slides.length;
     if (slides[cur].id === "story") story.play(); else story.stop();
     if (typeof paceStart === "function") paceStart();
   }
@@ -633,6 +648,22 @@
     wheelLock = Date.now() + 700;
     d > 0 ? next() : prev();
   }, { passive: false });
+
+  // 11-05 Jim：手機觸控翻頁（左滑＝下一步、右滑＝上一步；在輸入框或捲動區裡滑不換頁）
+  document.getElementById("tnext").addEventListener("click", () => next());
+  document.getElementById("tprev").addEventListener("click", () => prev());
+  let tx = null, ty = 0;
+  addEventListener("touchstart", (e) => {
+    if (e.touches.length !== 1 || e.target.closest("input, textarea, .tnav")) { tx = null; return; }
+    tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+  }, { passive: true });
+  addEventListener("touchend", (e) => {
+    if (tx === null) return;
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    tx = null;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    dx < 0 ? next() : prev();
+  }, { passive: true });
 
   // ── 草船借箭動畫 ──
   const story = (() => {
